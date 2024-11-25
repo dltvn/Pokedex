@@ -86,12 +86,12 @@ function PokemonModal({ isOpen, onClose, pokemonUrl }) {
                   />
                 </div>
               </div>
-              <div className="flex justify-between items-center w-full bg-gray15 p-1 border-y-2 border-black">
+              <div className="flex justify-between items-center w-full h-14 bg-gray15 p-1 border-y-2 border-black">
                 <button onClick={handlePrevious}>
                   <FaChevronLeft className="w-6 h-6 text-gray-700 hover:text-black" />
                 </button>
-                <div className="w-1/12">
-                  <img src="/images/ball-open.png" alt="pokeball" />
+                <div className="h-full">
+                  <img className="h-full" src="/images/ball-open.png" alt="pokeball" />
                 </div>
                 <button onClick={handleNext}>
                   <FaChevronRight className="w-6 h-6 text-gray-700 hover:text-black" />
@@ -136,17 +136,13 @@ function PokemonModal({ isOpen, onClose, pokemonUrl }) {
                 <div className="flex">
                   {pokemonData.types.map((type, i) => (
                     <span
-                      key={type.type.name}
-                      className={`flex-1 border-black py-3 ${
-                        type.type.name === "grass"
-                          ? "bg-green-500"
-                          : type.type.name === "poison"
-                          ? "bg-purple-500"
-                          : "bg-gray-500"
-                      } ${i === 0 ? "border-r-2" : ""}`}
-                    >
-                      {type.type.name}
-                    </span>
+                    key={type.type.name}
+                    className={`flex-1 border-black 
+                      py-3 bg-poke_${type.type.name} 
+                      ${i === 0 ? "border-r-2" : ""}`}
+                  >
+                    {type.type.name}
+                  </span>
                   ))}
                 </div>
               </div>
