@@ -2,4 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .searchInput {
+        @apply w-full bg-poke_blue p-3 border-l-2 border-y-2 border-black placeholder-black outline-none
+    }
+}
 
+body {
+    font-family: "Pixelify Sans", sans-serif;
+}
