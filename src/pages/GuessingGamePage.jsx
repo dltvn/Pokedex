@@ -4,10 +4,12 @@ import axios from "axios";
 function GuessingGamePage() {
     const totalPokemon = 967;
     const totalOptions = 5;
+    const timeToGuess = 60;
     const [gameWon, setGameWon] = useState(false);
     const [pokemonList, setPokemonList] = useState([])
     const [correctAnswer, setCorrectAnswer] = useState(null);
     const [failedAttempts, setFailedAttempts] = useState(0)
+    const [timeLeft, setTimeLeft] = useState(timeToGuess);
 
     const randomInt = (min, max) => {
         const minCeiled = Math.ceil(min);
@@ -39,6 +41,17 @@ function GuessingGamePage() {
         initializeGame();
     }, [])
 
+    useEffect(() => {
+        let timer = setInterval(() => {
+          setTimeLeft((timeLeft) => {
+            if (timeLeft === 0) {
+              clearInterval(timer);
+              return 0;
+            } else return timeLeft - 1;
+          });
+        }, 1000);
+      }, []);
+
     /*const processImage = () => {
         if(gameWon === true) return {filter: blur(0), filter: grayscale(0)};
         else return {filter: `blur(${totalOptions - 1 - failedAttempts}px) grayscale(${totalOptions - 1 - failedAttempts})`};
@@ -55,7 +68,7 @@ function GuessingGamePage() {
                 </div>
                 <div className="timer">
                     <button className="timer_button"></button>
-                    <h2 className="timer_time"></h2>
+                    <h2 className="timer_time">{Math.floor(timeLeft / 60)}:{timeLeft % 60}</h2>
                 </div>
             </div>
             <div className="half_page">
