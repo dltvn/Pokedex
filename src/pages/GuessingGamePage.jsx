@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import "./GuessingGamePage.css"
+
 function GuessingGamePage() {
     const totalPokemon = 967;
     const totalOptions = 5;
@@ -52,29 +54,33 @@ function GuessingGamePage() {
         }, 1000);
       }, []);
 
-    /*const processImage = () => {
-        if(gameWon === true) return {filter: blur(0), filter: grayscale(0)};
-        else return {filter: `blur(${totalOptions - 1 - failedAttempts}px) grayscale(${totalOptions - 1 - failedAttempts})`};
-    }*/
+    const processImage = () => {
+        if(gameWon === true) return {filter: "blur(0)"};
+        else return {filter: `blur(${(10 * timeLeft)/timeToGuess}px)`};
+    }
 
-    if(pokemonList.length === 0) return <div className="page"><h2>Loading...</h2></div>;
+    const capitalizeWord = (str) => {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    if(pokemonList.length === 0) return <div className="page"><h2 className="loading">Loading...</h2></div>;
 
     return (
         <div className="page">
             <div className="half_page">
                 <div className="card">
                     <h2>Who's that pokemon?</h2>
-                    <img src={correctAnswer.sprites.front_default}></img>
+                    <img src={correctAnswer.sprites.front_default} style={processImage()}></img>
                 </div>
                 <div className="timer">
-                    <button className="timer_button"></button>
-                    <h2 className="timer_time">{Math.floor(timeLeft / 60)}:{timeLeft % 60}</h2>
+                    <button>Start</button>
+                    <h2>{Math.floor(timeLeft / 60)}:{timeLeft % 60}</h2>
                 </div>
             </div>
             <div className="half_page">
                 <div className="answer_options">
                     {pokemonList.map((option) => (
-                        <button key={option.name}>{option.name}</button>
+                        <button className="option_button" key={option.name}>{capitalizeWord(option.name)}</button>
                     ))}
                 </div>
             </div>

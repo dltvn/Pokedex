@@ -1,0 +1,66 @@
+
+.page {
+    background-color: #e6dfdd;
+    display: flex;
+    flex-direction: row;
+    border: solid 2px black;
+    min-height: 100%;
+}
+.half_page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: center;
+    border: solid 2px black;
+    padding: 1.25rem;
+}
+
+.option_button {
+    padding: 10px;
+    background-color: transparent;
+    border: solid 2px #aca7a6;
+}
+
+.answer_options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+}
+
+.card {
+    border: solid 2px #aca7a6;
+}
+
+.card h2 {
+    border-bottom: solid 2px #aca7a6;
+    padding: 0.5rem;
+    text-align: center;
+}
+.card img {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.timer {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border: solid 2px #aca7a6;
+    width: 100%;
+    border-radius: 25px;
+}
+.timer button {
+    flex: 1;
+    padding: 0.5rem;
+    background-color: green;
+    border-radius: 25px;
+    
+}
+.timer h2 {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+}
