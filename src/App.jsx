@@ -2,6 +2,7 @@ import Header from './components/Header';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
 import SearchPage from "./pages/SearchPage.jsx";
+import GuessingGamePage from './pages/GuessingGamePage.jsx';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<SearchPage />} />
+            <Route path="/guess" element={<GuessingGamePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
