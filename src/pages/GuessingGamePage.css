@@ -22,6 +22,21 @@
     border: solid 2px #aca7a6;
 }
 
+.option_button.correct {
+    background-color: #52ae61;
+}
+.option_button.incorrect {
+    background-color: #dc0c2e;
+}
+
+button:disabled {
+    filter: contrast(50%);
+    cursor: not-allowed;
+}
+button:hover:not([disabled]) {
+    background-color: #27abff;
+}
+
 .answer_options {
     display: flex;
     flex-direction: column;
@@ -55,9 +70,8 @@
 .timer button {
     flex: 1;
     padding: 0.5rem;
-    background-color: green;
     border-radius: 25px;
-    
+    background-color: #aca7a6;
 }
 .timer h2 {
     flex: 1;

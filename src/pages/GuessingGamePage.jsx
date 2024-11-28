@@ -7,11 +7,13 @@ function GuessingGamePage() {
     const totalPokemon = 967;
     const totalOptions = 5;
     const timeToGuess = 60;
-    const [gameWon, setGameWon] = useState(false);
+    const maxFailedAttempts = totalOptions - 1;
+    const [gameStatus, setGameStatus] = useState("initial")
     const [pokemonList, setPokemonList] = useState([])
     const [correctAnswer, setCorrectAnswer] = useState(null);
     const [failedAttempts, setFailedAttempts] = useState(0)
-    const [timeLeft, setTimeLeft] = useState(timeToGuess);
+    const [timeLeft, setTimeLeft] = useState(0);
+    const [message, setMessage] = useState("");
 
     const randomInt = (min, max) => {
         const minCeiled = Math.ceil(min);
@@ -28,6 +30,7 @@ function GuessingGamePage() {
         }
     }
 
+
     useEffect(() => {
         const initializeGame = async () => {
             const newPokemonList = [];
@@ -38,25 +41,61 @@ function GuessingGamePage() {
 
             setPokemonList(newPokemonList);
             setCorrectAnswer(newPokemonList[randomInt(0, newPokemonList.length - 1)]);
+            setFailedAttempts(0);
+            setMessage("");
+            setTimeLeft(timeToGuess);
         };
 
-        initializeGame();
-    }, [])
+        if(gameStatus === "initial") initializeGame();
+    }, [gameStatus])
 
     useEffect(() => {
-        let timer = setInterval(() => {
-          setTimeLeft((timeLeft) => {
-            if (timeLeft === 0) {
-              clearInterval(timer);
-              return 0;
-            } else return timeLeft - 1;
-          });
-        }, 1000);
-      }, []);
+        if(gameStatus === "active") {
+            let timer = setInterval(() => {
+            setTimeLeft((prev) => {
+              if (prev === 0) {
+                setMessage("Time's up! You lost.");
+                setGameStatus("lost");
+                clearInterval(timer);
+                return 0;
+              } else return prev - 1;
+            });
+          }, 1000);
+          return () => clearInterval(timer);
+        }
+    }, [gameStatus])
+
+    const pickOption = (event, name) => {
+        if (gameStatus !== "active") return;
+        
+        if (name === correctAnswer.name) {
+            event.target.className = "option_button correct";
+            setMessage("You won!");
+            setGameStatus("won");
+        } else {
+            event.target.className = "option_button incorrect";
+            setFailedAttempts((prev) => {
+                const newAttempts = prev + 1;
+                if (newAttempts >= maxFailedAttempts) {
+                    setMessage("You lost! Too many wrong attempts.");
+                    setGameStatus("lost");
+                }
+                return newAttempts;
+            });
+        }
+    };
+
+    const startGame = () => {
+        setGameStatus("active");
+    };
+
+    const playAgain = () => {
+        setGameStatus("initial");
+    };
 
     const processImage = () => {
-        if(gameWon === true) return {filter: "blur(0)"};
-        else return {filter: `blur(${(10 * timeLeft)/timeToGuess}px)`};
+        if(gameStatus === "initial") return {filter: `contrast(0)`};
+        else if(gameStatus === "active") return {filter: `blur(${(6 * timeLeft)/timeToGuess}px)`};
     }
 
     const capitalizeWord = (str) => {
@@ -73,16 +112,18 @@ function GuessingGamePage() {
                     <img src={correctAnswer.sprites.front_default} style={processImage()}></img>
                 </div>
                 <div className="timer">
-                    <button>Start</button>
-                    <h2>{Math.floor(timeLeft / 60)}:{timeLeft % 60}</h2>
+                    <button onClick={gameStatus === "initial" ? startGame : playAgain} disabled={gameStatus === "active"}>{gameStatus === "initial" ? "Start" : "Play Again"}</button>
+                    <h2>{String(Math.floor(timeLeft / 60)).padStart(2, "0")}:{String(timeLeft % 60).padStart(2, "0")}</h2>
                 </div>
             </div>
             <div className="half_page">
+                {gameStatus === "initial" ? "Click Start to Play" :
                 <div className="answer_options">
                     {pokemonList.map((option) => (
-                        <button className="option_button" key={option.name}>{capitalizeWord(option.name)}</button>
+                        <button className="option_button" key={option.name} onClick={(e)=>pickOption(e, option.name)} disabled={gameStatus !== "active"}>{capitalizeWord(option.name)}</button>
                     ))}
-                </div>
+                </div>}
+                <h2>{message}</h2>
             </div>
         </div>
     );
