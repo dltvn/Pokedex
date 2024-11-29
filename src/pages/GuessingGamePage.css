@@ -2,7 +2,7 @@
 .page {
     background-color: #e6dfdd;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border: solid 2px black;
     min-height: 100%;
 }
@@ -12,8 +12,14 @@
     flex-direction: column;
     gap: 1.25rem;
     align-items: center;
-    border: solid 2px black;
     padding: 1.25rem;
+}
+
+#game_message {
+    padding: 10px;
+    background-color: transparent;
+    border: solid 2px #aca7a6;
+    width: 100%;
 }
 
 .option_button {
@@ -77,4 +83,14 @@ button:hover:not([disabled]) {
     flex: 1;
     text-align: center;
     padding: 0.5rem;
+}
+
+@media only screen and (min-width: 768px) {
+    .page {
+        flex-direction: row;
+        border: solid 1px black;
+    }
+    .half_page {
+        border: solid 1px black;
+    }
 }

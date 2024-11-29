@@ -42,7 +42,7 @@ function GuessingGamePage() {
             setPokemonList(newPokemonList);
             setCorrectAnswer(newPokemonList[randomInt(0, newPokemonList.length - 1)]);
             setFailedAttempts(0);
-            setMessage("");
+            setMessage("Click Start to Play");
             setTimeLeft(timeToGuess);
         };
 
@@ -55,7 +55,7 @@ function GuessingGamePage() {
             setTimeLeft((prev) => {
               if (prev === 0) {
                 setMessage("Time's up! You lost.");
-                setGameStatus("lost");
+                setGameStatus("finished");
                 clearInterval(timer);
                 return 0;
               } else return prev - 1;
@@ -71,18 +71,19 @@ function GuessingGamePage() {
         if (name === correctAnswer.name) {
             event.target.className = "option_button correct";
             setMessage("You won!");
-            setGameStatus("won");
+            setGameStatus("finished");
         } else {
             event.target.className = "option_button incorrect";
             setFailedAttempts((prev) => {
                 const newAttempts = prev + 1;
                 if (newAttempts >= maxFailedAttempts) {
                     setMessage("You lost! Too many wrong attempts.");
-                    setGameStatus("lost");
+                    setGameStatus("finished");
                 }
                 return newAttempts;
             });
         }
+        event.target.disabled = true;
     };
 
     const startGame = () => {
@@ -108,7 +109,7 @@ function GuessingGamePage() {
         <div className="page">
             <div className="half_page">
                 <div className="card">
-                    <h2>Who's that pokemon?</h2>
+                    <h2>{gameStatus === "finished" ? capitalizeWord(correctAnswer.name) : "Who's that pokemon?"}</h2>
                     <img src={correctAnswer.sprites.front_default} style={processImage()}></img>
                 </div>
                 <div className="timer">
@@ -117,13 +118,13 @@ function GuessingGamePage() {
                 </div>
             </div>
             <div className="half_page">
-                {gameStatus === "initial" ? "Click Start to Play" :
+                <h2 id="game_message">{message}</h2>
+                {gameStatus === "initial" ? "" :
                 <div className="answer_options">
                     {pokemonList.map((option) => (
                         <button className="option_button" key={option.name} onClick={(e)=>pickOption(e, option.name)} disabled={gameStatus !== "active"}>{capitalizeWord(option.name)}</button>
                     ))}
                 </div>}
-                <h2>{message}</h2>
             </div>
         </div>
     );
