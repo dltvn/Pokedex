@@ -71,7 +71,7 @@ useEffect(() => {
     });
     setUserpokemonIds(ids => [...ids, pokemon.id]);
     alert('You caught '+pokemonData.name);
-    console.log(response);
+    onCatch?.();
   };
 
   if (!isOpen) return null;

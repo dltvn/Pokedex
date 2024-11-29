@@ -5,7 +5,6 @@ import PokemonModal from "../components/PokemonModal";
 function SearchPage() {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonUrl, setPokemonUrl] = useState();
-  const [search, setSearch] = useState("");
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedPokemon, setSelectedPokemon] = useState(null); 
@@ -35,7 +34,6 @@ function SearchPage() {
   }, []);
 
   const handleSearch = (e) => {
-    setSearch(e.target.value);
     const searchQuery = e.target.value.toLowerCase();
 
     const filtered = pokemonList.filter((pokemon) =>
@@ -46,7 +44,7 @@ function SearchPage() {
   };
 
   return (
-    <div className="bg-poke_gray min-h-screen flex flex-col">
+    <div className="bg-poke_gray flex flex-col">
       {/* Header */}
 
       {/* Content */}
