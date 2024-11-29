@@ -7,7 +7,7 @@ function GuessingGamePage() {
     const totalPokemon = 967;
     const totalOptions = 5;
     const timeToGuess = 60;
-    const maxFailedAttempts = totalOptions - 1;
+    const maxFailedAttempts = totalOptions - 2;
     const [gameStatus, setGameStatus] = useState("initial")
     const [pokemonList, setPokemonList] = useState([])
     const [correctAnswer, setCorrectAnswer] = useState(null);
@@ -110,7 +110,7 @@ function GuessingGamePage() {
             <div className="half_page">
                 <div className="card">
                     <h2>{gameStatus === "finished" ? capitalizeWord(correctAnswer.name) : "Who's that pokemon?"}</h2>
-                    <img src={correctAnswer.sprites.front_default} style={processImage()}></img>
+                    <img src={correctAnswer.sprites.other['official-artwork'].front_default} style={processImage()}></img>
                 </div>
                 <div className="timer">
                     <button onClick={gameStatus === "initial" ? startGame : playAgain} disabled={gameStatus === "active"}>{gameStatus === "initial" ? "Start" : "Play Again"}</button>
@@ -118,7 +118,10 @@ function GuessingGamePage() {
                 </div>
             </div>
             <div className="half_page">
-                <h2 id="game_message">{message}</h2>
+                <div className="game_info">
+                    <h2 id="game_message">{message}</h2>
+                    <h2 id="game_message">Lives: {maxFailedAttempts-failedAttempts}</h2>
+                </div>
                 {gameStatus === "initial" ? "" :
                 <div className="answer_options">
                     {pokemonList.map((option) => (
