@@ -39,6 +39,9 @@ export default {
     {
       pattern: /^bg-poke_/,
     },
+    {
+      pattern: /^(from|via|to)-poke_/,
+    }
   ],
   plugins: [],
 }
