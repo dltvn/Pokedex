@@ -21,7 +21,7 @@ const Header = () => {
           <Link
             key={link.path}
             to={link.path}
-            className={`px-4 py-2 rounded rounded-3xl ${
+            className={`px-4 py-2 rounded-3xl ${
               location.pathname === link.path
                 ? "bg-red-700 font-bold border-2 border-black"
                 : "hover:bg-red-800"
