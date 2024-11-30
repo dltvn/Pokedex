@@ -11,7 +11,7 @@ const Header = () => {
   ];
 
   const handleLogin = () => {
-    window.location.href = "/api/auth/google";
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL || ''}/api/auth/google`;
   };
 
   return (
