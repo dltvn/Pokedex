@@ -24,7 +24,9 @@ useEffect(() => {
           setPokemonData(response.data);
           setCurrentId(response.data.id);
           const {data} = await axios.get("/api/pokemon/users/ids");
-          setUserpokemonIds(data.pokemonIds);
+          if(data?.pokemonIds) {
+            setUserpokemonIds(data.pokemonIds);
+          }
         } catch (error) {
           console.error("Failed to fetch Pokémon data:", error);
         } finally {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import "./GuessingGamePage.css"
+import "./GuessingGamePage.scss"
 
 function GuessingGamePage() {
     const totalPokemon = 967;

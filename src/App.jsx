@@ -38,5 +38,8 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+if (import.meta.env.MODE === 'production') {
+  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+}
 
 export default App;
