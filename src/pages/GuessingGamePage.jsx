@@ -6,7 +6,7 @@ import "./GuessingGamePage.scss"
 function GuessingGamePage() {
     const totalPokemon = 967;
     const totalOptions = 5;
-    const timeToGuess = 60;
+    const timeToGuess = 10;
     const maxFailedAttempts = totalOptions - 2;
     const [gameStatus, setGameStatus] = useState("initial")
     const [pokemonList, setPokemonList] = useState([])
@@ -96,7 +96,7 @@ function GuessingGamePage() {
 
     const processImage = () => {
         if(gameStatus === "initial") return {filter: `contrast(0)`};
-        else if(gameStatus === "active") return {filter: `blur(${(6 * timeLeft)/timeToGuess}px)`};
+        else if(gameStatus === "active") return {filter: `blur(${(20 * timeLeft)/timeToGuess}px)`};
     }
 
     const capitalizeWord = (str) => {

@@ -23,8 +23,8 @@ const Header = () => {
             to={link.path}
             className={`px-4 py-2 rounded-3xl ${
               location.pathname === link.path
-                ? "bg-red-700 font-bold border-2 border-black"
-                : "hover:bg-red-800"
+                ? "bg-red-700 border-black border-2 "
+                : "hover:bg-red-700 "
             }`}
           >
             {link.label}
@@ -32,7 +32,7 @@ const Header = () => {
         ))}
       </nav>
       <div
-        className="w-8 h-8 bg-red-700 rounded-full hover:bg-red-800"
+        className="w-8 h-8 bg-red-700 rounded-full hover:bg-red-800 border-2 border-black"
         onClick={handleLogin}
       ></div>
     </header>
