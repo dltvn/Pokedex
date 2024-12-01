@@ -7,7 +7,7 @@ const AxiosInterceptor = ({ children }) => {
 
   useEffect(() => {
     // Add request interceptor
-    const requestInterceptor = axios.interceptors.request.use(
+    axios.interceptors.request.use(
       (config) => {
         // Retrieve JWT token from localStorage
         const token = localStorage.getItem("token");
@@ -23,7 +23,7 @@ const AxiosInterceptor = ({ children }) => {
     );
 
     // Add response interceptor
-    const responseInterceptor = axios.interceptors.response.use(
+    axios.interceptors.response.use(
       (response) => response,
       (error) => {
         if (error.response && error.response.status === 401) {
@@ -33,12 +33,6 @@ const AxiosInterceptor = ({ children }) => {
         return Promise.reject(error);
       }
     );
-
-    // Cleanup both interceptors on unmount
-    return () => {
-      axios.interceptors.request.eject(requestInterceptor); // Remove request interceptor
-      axios.interceptors.response.eject(responseInterceptor); // Remove response interceptor
-    };
   }, [navigate]);
 
   return children;
