@@ -7,7 +7,8 @@ import TeamBuilderPage from './pages/TeamBuilderPage.jsx';
 import PokedexPage from "./pages/PokedexPage.jsx";
 import axios from "axios";
 import Modal from "react-modal";
-
+import AxiosInterceptor from './components/AxiosInterceptor.jsx';
+import LoginPage from './pages/LoginPage.jsx';
 Modal.setAppElement("#root");
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Header />
         <div className="flex-1">
           <Routes>
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/pokedex" element={<PokedexPage />} />
             <Route path="/who-is-that-pokemon" element={<GuessingGamePage />} />
@@ -26,6 +28,7 @@ function App() {
           </Routes>
         </div>
       </div>
+      <AxiosInterceptor/>
     </Router>
   );
 }
@@ -33,7 +36,7 @@ axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      window.location.href = `${import.meta.env.VITE_API_BASE_URL || ''}/api/auth/google`;
+      //window.location.href = `${import.meta.env.VITE_API_BASE_URL || ''}/api/auth/google`;
     }
     return Promise.reject(error);
   }
