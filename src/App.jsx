@@ -7,13 +7,14 @@ import TeamBuilderPage from './pages/TeamBuilderPage.jsx';
 import PokedexPage from "./pages/PokedexPage.jsx";
 import axios from "axios";
 import Modal from "react-modal";
-import AxiosInterceptor from './components/AxiosInterceptor.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import AxiosInterceptor from './components/AxiosInterceptor.jsx';
 Modal.setAppElement("#root");
 
 function App() {
   return (
     <Router>
+      <AxiosInterceptor/>
       <div className="flex flex-col min-h-[100vh]">
         <Header />
         <div className="flex-1">
@@ -28,7 +29,6 @@ function App() {
           </Routes>
         </div>
       </div>
-      <AxiosInterceptor/>
     </Router>
   );
 }

@@ -2,40 +2,42 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const AxiosInterceptor = ({ children }) => {
+const AxiosInterceptor = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Add request interceptor
-    axios.interceptors.request.use(
+    // Request Interceptor
+    const requestInterceptor = axios.interceptors.request.use(
       (config) => {
-        // Retrieve JWT token from localStorage
         const token = localStorage.getItem("token");
         if (token) {
-          config.headers.Authorization = `Bearer ${token}`; // Add the token to Authorization header
+          config.headers.Authorization = `Bearer ${token}`; // Add token to Authorization header
         }
         return config;
       },
-      (error) => {
-        // Handle request error
-        return Promise.reject(error);
-      }
+      (error) => Promise.reject(error)
     );
 
-    // Add response interceptor
-    axios.interceptors.response.use(
+    // Response Interceptor
+    const responseInterceptor = axios.interceptors.response.use(
       (response) => response,
       (error) => {
         if (error.response && error.response.status === 401) {
-          // Redirect to login page on 401 Unauthorized
-          navigate("/login");
+          localStorage.removeItem("token"); // Remove token
+          navigate("/login"); // Redirect to login page
         }
         return Promise.reject(error);
       }
     );
+
+    // Cleanup Interceptors on unmount
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+      axios.interceptors.response.eject(responseInterceptor);
+    };
   }, [navigate]);
 
-  return children;
+  return null; // This component does not render anything
 };
 
 export default AxiosInterceptor;
