@@ -1,7 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const links = [
     { path: "/search", label: "Search" },
@@ -11,7 +12,7 @@ const Header = () => {
   ];
 
   const handleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL || ''}/api/auth/google`;
+    navigate("/login"); // Navigate to /login route
   };
 
   return (
@@ -23,8 +24,8 @@ const Header = () => {
             to={link.path}
             className={`px-4 py-2 rounded-3xl ${
               location.pathname === link.path
-                ? "bg-red-700 border-black border-2 "
-                : "hover:bg-red-700 "
+                ? "bg-red-700 border-black border-2"
+                : "hover:bg-red-700"
             }`}
           >
             {link.label}
