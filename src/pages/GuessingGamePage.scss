@@ -5,6 +5,7 @@
     flex-direction: column;
     border: solid 2px black;
     min-height: 100%;
+    border-top: 0px !important;
 }
 .half_page {
     flex: 1;
@@ -89,6 +90,7 @@
     padding: 0.5rem;
     border-radius: 25px;
     background-color: #aca7a6;
+    height: 100%;
 }
 .timer h2 {
     flex: 1;
