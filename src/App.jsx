@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       <AxiosInterceptor/>
-      <div className="flex flex-col min-h-[100vh]">
+      <div className="flex flex-col min-h-[100vh] relative">
         <Header />
         <div className="flex-1">
           <Routes>

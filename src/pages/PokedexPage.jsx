@@ -39,7 +39,7 @@ function PokedexPage() {
 
   const handleSearch = (e) => {
     const searchQuery = e.target.value.toLowerCase();
-    const filtered = pokemonList.filter(({pokemon}) =>
+    const filtered = pokemonList.filter(({ pokemon }) =>
       pokemon.name.toLowerCase().includes(searchQuery)
     );
 
@@ -71,24 +71,27 @@ function PokedexPage() {
           {filteredPokemon.map(({ pokemon }) => (
             <div
               key={pokemon.id}
-              className="aspect-square flex flex-col"
+              className="aspect-square flex flex-col text-center text-xl md:text-2xl cursor-pointer"
               onClick={() => handlePokemonClick(pokemon.id)}
             >
               <h2
                 className={
-                  "bg-gradient-to-r " +
-                  pokemon.types
-                    .map(({ type: { name } }, i) => {
-                      if (i === 0) return `from-poke_${name}`;
-                      if (i === pokemon.types.length - 1)
-                        return `to-poke_${name}`;
-                      return `via-poke_${name}`;
-                    })
-                    .join(" ")
+                  pokemon.types.length === 1
+                    ? `bg-poke_${pokemon.types[0].type.name}`
+                    : "bg-gradient-to-r " +
+                      pokemon.types
+                        .map(({ type: { name } }, i) => {
+                          if (i === 0) return `from-poke_${name}`;
+                          if (i === pokemon.types.length - 1)
+                            return `to-poke_${name}`;
+                          return `via-poke_${name}`;
+                        })
+                        .join(" ")
                 }
               >
                 {pokemon.name}
               </h2>
+
               <div className="flex-1 border-2 border-gray25 flex items-center justify-center">
                 <img
                   src={

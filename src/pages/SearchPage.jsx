@@ -74,7 +74,7 @@ function SearchPage() {
         {/* Right Panel */}
         <div className="hidden sm:block flex-1 p-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-500">
+            <h1 className="app-title">
               App Name Placeholder
             </h1>
           </div>

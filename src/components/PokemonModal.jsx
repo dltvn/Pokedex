@@ -10,10 +10,10 @@ function PokemonModal({ isOpen, onClose, pokemonUrl }) {
   const [pokemonData, setPokemonData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  setIsCaught(userPokemonIds.includes(currentId));
-  console.log(userPokemonIds,currentId)
-}, [currentId, pokemonUrl, userPokemonIds]);
+  useEffect(() => {
+    setIsCaught(userPokemonIds.includes(currentId));
+    console.log(userPokemonIds, currentId);
+  }, [currentId, pokemonUrl, userPokemonIds]);
 
   useEffect(() => {
     if (isOpen && pokemonUrl) {
@@ -23,8 +23,8 @@ useEffect(() => {
           const response = await axios.get(pokemonUrl);
           setPokemonData(response.data);
           setCurrentId(response.data.id);
-          const {data} = await axios.get("/api/pokemon/users/ids");
-          if(data?.pokemonIds) {
+          const { data } = await axios.get("/api/pokemon/users/ids");
+          if (data?.pokemonIds) {
             setUserpokemonIds(data.pokemonIds);
           }
         } catch (error) {
@@ -67,12 +67,12 @@ useEffect(() => {
   };
 
   const catchPokemon = async () => {
-    const {cries, forms, moves,game_indices, ...pokemon} = pokemonData;
+    const { cries, forms, moves, game_indices, ...pokemon } = pokemonData;
     const response = await axios.post("/api/pokemon", {
-      pokemon
+      pokemon,
     });
-    setUserpokemonIds(ids => [...ids, pokemon.id]);
-    alert('You caught '+pokemonData.name);
+    setUserpokemonIds((ids) => [...ids, pokemon.id]);
+    alert("You caught " + pokemonData.name);
     onCatch?.();
   };
 
@@ -82,7 +82,8 @@ useEffect(() => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      className="bg-poke_gray w-full mx-auto h-full"
+      className="bg-poke_gray w-full mx-auto h-full z-50"
+      style={{ overlay: { zIndex: 50 } }}
     >
       <div className="flex flex-col h-full text-center sm:flex-row overflow-y-auto">
         {pokemonData && (
@@ -93,29 +94,39 @@ useEffect(() => {
                   <FaTimes className="w-6 h-6 text-gray-700 hover:text-black" />
                 </button>
               </div>
-                <div className="flex-1 p-7 flex items-center justify-center">
+              <div className="flex-1 p-7 flex items-center justify-center">
                 <div className="h-fit w-fit sflex flex-col border-2 border-gray15">
                   <h2 className="w-full bg-gray15 p-2 capitalize">
                     {pokemonData.name}
                   </h2>
                   <div className="h-full">
-                  <img
-                    src={pokemonData.sprites.other['official-artwork'].front_default}
-                    alt={pokemonData.name}
-                    className="f-full object-contain p-6"
-                  />
+                    <img
+                      src={
+                        pokemonData.sprites.other["official-artwork"]
+                          .front_default
+                      }
+                      alt={pokemonData.name}
+                      className="f-full object-contain p-6"
+                    />
                   </div>
                 </div>
-                </div>
-              <div className="relative flex justify-between items-center w-full h-[50px] bg-gray15 p-1 sm:border-b-2 border-t-2 border-black">
+              </div>
+              <div className="relative flex justify-between items-center w-full h-[54px] bg-gray15 p-1 border-t-2 border-black">
                 <button onClick={handlePrevious}>
                   <FaChevronLeft className="w-6 h-6 text-gray-700 hover:text-black" />
                 </button>
                 <div className="">
-                  <button onClick={catchPokemon} className="absolute bottom-3 left-1/2 transform -translate-x-1/2">
+                  <button
+                    onClick={catchPokemon}
+                    className="absolute bottom-3 left-1/2 transform -translate-x-1/2"
+                  >
                     <img
                       className="h-full object-contain"
-                      src={isCaught ? '/images/ball-close.png' : '/images/ball-open.png'}
+                      src={
+                        isCaught
+                          ? "/images/ball-close.png"
+                          : "/images/ball-open.png"
+                      }
                       alt="pokeball"
                       width={53}
                     />
@@ -128,11 +139,8 @@ useEffect(() => {
             </div>
 
             <div className="flex-1 flex flex-col border-r-2 border-black">
-              <div className="flex-1">
-                <h3 className="bg-gray25 p-2 border-2 border-x-0 border-black">
-                  Info
-                </h3>
-                <ul className="p-3 text-center flex flex-col justify-center items-center ">
+              <PokemonInfoCard title="info">
+                <ul className="dot-list">
                   <li>Height: {pokemonData.height}</li>
                   <li>Weight: {pokemonData.weight}</li>
                   <li>Gender: Male/Female</li>
@@ -144,20 +152,17 @@ useEffect(() => {
                       .join(", ")}
                   </li>
                 </ul>
-              </div>
-              <div className="flex-1">
-                <h3 className="bg-gray25 p-2 border-2 border-x-0 border-black">
-                  Stats
-                </h3>
-                <ul className="p-3 text-center">
+              </PokemonInfoCard>
+              <PokemonInfoCard title="Stats">
+                <ul className="dot-list">
                   {pokemonData.stats.map((stat) => (
                     <li key={stat.stat.name}>
                       {stat.stat.name}: {stat.base_stat}
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div className="">
+              </PokemonInfoCard>
+              <div>
                 <h3 className="bg-gray25 p-2 border-2 border-x-0 border-black">
                   Types
                 </h3>
@@ -181,5 +186,18 @@ useEffect(() => {
     </Modal>
   );
 }
+
+const PokemonInfoCard = ({ title, children }) => {
+  return (
+    <div className="flex-1 flex flex-col">
+      <h3 className="bg-gray25 p-2 border-2 border-x-0 border-black">
+        {title}
+      </h3>
+      <div className="flex flex-1 p-3 text-center justify-center items-center">
+        {children}
+      </div>
+    </div>
+  );
+};
 
 export default PokemonModal;
