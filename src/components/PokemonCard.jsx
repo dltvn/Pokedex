@@ -6,7 +6,6 @@ export default function PokemonCard({ pokemon, onRemove }) {
       return `bg-poke_${types[0].type.name}`;
     }
 
-    // Create gradient for multiple types
     return (
       "bg-gradient-to-r " +
       types
