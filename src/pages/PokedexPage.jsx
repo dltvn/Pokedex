@@ -28,7 +28,7 @@ function PokedexPage() {
       setLoading(true);
       const response = await axios.get("/api/pokemon/users");
       setPokemonList(response.data.pokemons || []);
-      setFilteredPokemon(response.data.pokemons);
+      setFilteredPokemon(response.data.pokemons || []);
     } catch (err) {
       console.error("Error fetching Pokémon list:", err);
       setError("Failed to load Pokémon list.");
@@ -68,9 +68,9 @@ function PokedexPage() {
         </p>
       ) : (
         <div className="flex-1 mt-7 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 px-6">
-          {filteredPokemon.map(({ pokemon }) => (
+          {filteredPokemon.map(({ pokemon }, i) => (
             <div
-              key={pokemon.id}
+              key={i}
               className="aspect-square flex flex-col text-center text-xl md:text-2xl cursor-pointer"
               onClick={() => handlePokemonClick(pokemon.id)}
             >

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PokemonModal from "../components/PokemonModal";
 
+const MAX_POKEMON = 300;
+
 function SearchPage() {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonUrl, setPokemonUrl] = useState();
@@ -22,7 +24,7 @@ function SearchPage() {
   useEffect(() => {
     const fetchPokemonList = async () => {
       try {
-        const response = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=151");
+        const response = await axios.get("https://pokeapi.co/api/v2/pokemon?limit="+MAX_POKEMON);
         setPokemonList(response.data.results);
         setFilteredPokemon(response.data.results);
       } catch (error) {

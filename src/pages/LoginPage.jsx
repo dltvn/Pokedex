@@ -19,7 +19,7 @@ const LoginPage = () => {
       alert("Login successful!");
       
       // Navigate to /pokedex after login success
-      navigate("/pokedex");
+      window.location.href = "/pokedex";
     } catch (error) {
       console.error("Error during server authentication:", error);
       alert("Login failed.");

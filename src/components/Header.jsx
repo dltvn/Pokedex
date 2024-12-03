@@ -1,21 +1,39 @@
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import axios from "axios";
+
+const links = [
+  { path: "/search", label: "Search" },
+  { path: "/pokedex", label: "Pokedex" },
+  { path: "/teams", label: "Teams" },
+  { path: "/who-is-that-pokemon", label: "Who's That Pokemon" },
+];
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for mobile menu
+  const [user, setUser] = useState();
 
-  const links = [
-    { path: "/search", label: "Search" },
-    { path: "/pokedex", label: "Pokedex" },
-    { path: "/teams", label: "Teams" },
-    { path: "/who-is-that-pokemon", label: "Who's That Pokemon" },
-  ];
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const getUserInfo = async () => {
+    const { data } = await axios.get("/api/auth");
+    if (data.user) {
+      setUser(data.user);
+    }
+  };
 
   const handleLogin = () => {
     navigate("/login");
+  };
+
+  const handleLogout = () => {
+    localStorage.setItem("token", null);
+    window.location.href = "/";
   };
 
   const toggleMenu = () => {
@@ -48,7 +66,13 @@ const Header = () => {
         aria-label="Toggle Menu"
       >
         {isMenuOpen ? (
-          <FaBars style={{ stroke: "black", strokeWidth: 30, transform: "rotate(90deg)" }} />
+          <FaBars
+            style={{
+              stroke: "black",
+              strokeWidth: 30,
+              transform: "rotate(90deg)",
+            }}
+          />
         ) : (
           <FaBars style={{ stroke: "black", strokeWidth: 30 }} />
         )}
@@ -77,10 +101,25 @@ const Header = () => {
       )}
 
       {/* Login Icon */}
-      <div
-        className="w-8 h-8 bg-red-700 rounded-full hover:bg-red-800 border-2 border-black"
-        onClick={handleLogin}
-      ></div>
+      {user ? (
+        <div className="flex items-center space-x-4" onClick={handleLogout}>
+          {/* User Name */}
+          <span className="text-black font-medium">{user.name || "Guest"}</span>
+          {/* User Image */}
+          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-black">
+            <img
+              src={user.picture} // User's image or default
+              alt={user.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      ) : (
+        <div
+          className="w-8 h-8 bg-red-700 rounded-full hover:bg-red-800 border-2 border-black"
+          onClick={handleLogin}
+        ></div>
+      )}
     </header>
   );
 };

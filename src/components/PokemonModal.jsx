@@ -3,7 +3,7 @@ import axios from "axios";
 import Modal from "react-modal";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-function PokemonModal({ isOpen, onClose, pokemonUrl }) {
+function PokemonModal({ isOpen, onClose, pokemonUrl, onCatch }) {
   const [userPokemonIds, setUserpokemonIds] = useState([]);
   const [isCaught, setIsCaught] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -67,6 +67,9 @@ function PokemonModal({ isOpen, onClose, pokemonUrl }) {
   };
 
   const catchPokemon = async () => {
+    if(isCaught) {
+      return;
+    }
     const { cries, forms, moves, game_indices, ...pokemon } = pokemonData;
     const response = await axios.post("/api/pokemon", {
       pokemon,
