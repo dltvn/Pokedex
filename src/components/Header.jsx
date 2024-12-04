@@ -62,7 +62,7 @@ const Header = () => {
       </nav>
 
       {/* Single Title Display */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 text-lg text-black">{currentLink.label}</div>
+      <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 text-lg text-black">{currentLink.label}</div>
 
       {/* Mobile Menu Toggle */}
       <button
