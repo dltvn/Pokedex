@@ -36,6 +36,8 @@ const Header = () => {
     window.location.href = "/";
   };
 
+  const currentLink = links.find((link) => link.path === location.pathname) || links[0];
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -59,6 +61,9 @@ const Header = () => {
         ))}
       </nav>
 
+      {/* Single Title Display */}
+      <div className="absolute left-1/2 transform -translate-x-1/2 text-lg text-black">{currentLink.label}</div>
+
       {/* Mobile Menu Toggle */}
       <button
         className="md:hidden text-3xl text-red-700"
@@ -80,7 +85,7 @@ const Header = () => {
 
       {/* Mobile Dropdown Menu */}
       {isMenuOpen && (
-        <div className="absolute left-0 w-full h-[calc(100vh-50px)] bg-red-500 bg-opacity-20 backdrop-blur-md shadow-lg md:hidden top-[50px]">
+        <div className="absolute left-0 w-full h-[calc(100vh-50px)] bg-red-500 bg-opacity-20 backdrop-blur-md shadow-lg md:hidden top-[50px] text-center">
           <nav className="flex flex-col items-start space-y-2 p-4">
             {links.map((link) => (
               <Link
