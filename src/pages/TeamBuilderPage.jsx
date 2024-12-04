@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";  // Import React and hooks
 import axios from "axios";
 import PokemonSearch from "../components/PokemonSearch";
 import PokemonGrid from "../components/PokemonGrid";
@@ -11,6 +9,11 @@ import PokemonModal from "../components/PokemonModal";
 export default function TeamBuilderPage() {
   const [teams, setTeams] = useState([
     { id: 1, name: "Team #1", pokemon: [] },
+    { id: 2, name: "Team #2", pokemon: [] },
+    { id: 3, name: "Team #3", pokemon: [] },
+    { id: 4, name: "Team #4", pokemon: [] },
+    { id: 5, name: "Team #5", pokemon: [] },
+    { id: 6, name: "Team #6", pokemon: [] },
   ]);
   const [selectedTeam, setSelectedTeam] = useState(1);
   const [pokemonList, setPokemonList] = useState([]);
@@ -19,10 +22,18 @@ export default function TeamBuilderPage() {
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [pokemonUrl, setPokemonUrl] = useState();
+  const [searchTerm, setSearchTerm] = useState(""); // Added state for search term
 
   useEffect(() => {
     fetchPokemonList();
   }, []);
+
+  useEffect(() => {
+    const filtered = pokemonList.filter(({ pokemon }) =>
+      pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredPokemon(filtered);
+  }, [searchTerm, pokemonList]);
 
   const fetchPokemonList = async () => {
     try {
@@ -47,17 +58,8 @@ export default function TeamBuilderPage() {
     }
   };
 
-  const handleSearch = (e) => {
-    const searchQuery = e.target.value.toLowerCase();
-    const filtered = pokemonList.filter(({ pokemon }) =>
-      pokemon.name.toLowerCase().includes(searchQuery)
-    );
-    setFilteredPokemon(filtered);
-  };
-
-  const addTeam = () => {
-    const newTeamId = teams.length + 1;
-    setTeams([...teams, { id: newTeamId, name: `Team #${newTeamId}`, pokemon: [] }]);
+  const handleSearch = (searchQuery) => {
+    setSearchTerm(searchQuery); // Update the search term
   };
 
   const addToTeam = (newPokemon) => {
@@ -120,22 +122,14 @@ export default function TeamBuilderPage() {
         selectedTeam={selectedTeam}
         onSelectTeam={setSelectedTeam}
         onUpdateTeamName={updateTeamName}
-        onAddTeam={addTeam}
       />
 
       <div className="flex-1 space-y-6">
-        <PokemonSearch onSearchChange={handleSearch} />
+        <PokemonSearch searchTerm={searchTerm} onSearchChange={handleSearch} />
         <TeamPokemon team={teams[selectedTeam - 1]} onRemovePokemon={removeFromTeam} />
 
         <PokemonGrid pokemon={filteredPokemon} onPokemonClick={addToTeam} />
       </div>
-
-      <PokemonModal
-        isOpen={modalIsOpen}
-        onClose={() => setModalIsOpen(false)}
-        onCatch={() => fetchPokemonList()}
-        pokemonUrl={pokemonUrl}
-      />
     </div>
   );
 }

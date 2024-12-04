@@ -3,16 +3,16 @@ export default function PokemonCard({ pokemon, onRemove }) {
     if (!types || types.length === 0) return "bg-poke_normal"; // Fallback to "normal" type if no types are provided.
 
     if (types.length === 1) {
-      return `bg-poke_${types[0].type.name}`;
+      return `bg-poke_${types[0].type.name}`; // Corrected to use backticks
     }
 
     return (
       "bg-gradient-to-r " +
       types
         .map(({ type: { name } }, i) => {
-          if (i === 0) return `from-poke_${name}`;
-          if (i === types.length - 1) return `to-poke_${name}`;
-          return `via-poke_${name}`;
+          if (i === 0) return `from-poke_${name}`; // Corrected to use backticks
+          if (i === types.length - 1) return `to-poke_${name}`; // Corrected to use backticks
+          return `via-poke_${name}`; // Corrected to use backticks
         })
         .join(" ")
     );
@@ -32,7 +32,7 @@ export default function PokemonCard({ pokemon, onRemove }) {
         </button>
       )}
       <div
-        className={`p-1 text-center font-mono text-sm border-b-2 border-gray-300 ${backgroundClass}`}
+        className={`p-1 text-center font-mono text-sm border-b-2 border-gray-300 ${backgroundClass}`} // Corrected to use backticks for dynamic class binding
       >
         {pokemon.name}
       </div>
