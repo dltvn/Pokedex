@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";  // Import React and hooks
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PokemonSearch from "../components/PokemonSearch";
 import PokemonGrid from "../components/PokemonGrid";
@@ -22,7 +22,7 @@ export default function TeamBuilderPage() {
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [pokemonUrl, setPokemonUrl] = useState();
-  const [searchTerm, setSearchTerm] = useState(""); // Added state for search term
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchPokemonList();
@@ -49,17 +49,13 @@ export default function TeamBuilderPage() {
     }
   };
 
-  const handlePokemonClick = async (id) => {
-    try {
-      setPokemonUrl(`https://pokeapi.co/api/v2/pokemon/${id}/`);
-      setModalIsOpen(true);
-    } catch (error) {
-      console.error("Error fetching Pokémon details:", error);
-    }
+  const handlePokemonClick = (pokemon) => {
+    setPokemonUrl(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}/`);
+    setModalIsOpen(true);
   };
 
   const handleSearch = (searchQuery) => {
-    setSearchTerm(searchQuery); // Update the search term
+    setSearchTerm(searchQuery);
   };
 
   const addToTeam = (newPokemon) => {
@@ -126,10 +122,28 @@ export default function TeamBuilderPage() {
 
       <div className="flex-1 space-y-6">
         <PokemonSearch searchTerm={searchTerm} onSearchChange={handleSearch} />
-        <TeamPokemon team={teams[selectedTeam - 1]} onRemovePokemon={removeFromTeam} />
+        <TeamPokemon
+          team={teams[selectedTeam - 1]}
+          onRemovePokemon={removeFromTeam}
+          onPokemonClick={handlePokemonClick}
+        />
 
-        <PokemonGrid pokemon={filteredPokemon} onPokemonClick={addToTeam} />
+        <PokemonGrid
+          pokemon={filteredPokemon}
+          onPokemonClick={(pokemon) => {
+            addToTeam(pokemon);
+          }}
+        />
       </div>
+
+      {modalIsOpen && (
+        <PokemonModal
+          pokemonUrl={pokemonUrl}
+          isOpen={modalIsOpen}
+          onClose={() => setModalIsOpen(false)}
+        />
+      )}
     </div>
   );
 }
+
