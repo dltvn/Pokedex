@@ -32,7 +32,7 @@ export default function PokemonCard({ pokemon, onRemove, onPokemonClick }) {
         </button>
       )}
       <div
-        className={`p-1 text-center font-mono text-sm border-b-2 border-gray-300 ${backgroundClass}`}
+        className={`p-1 text-center font-mono text-sm border-b-2 border-gray-300 capitalize ${backgroundClass}`}
       >
         {pokemon.name}
       </div>

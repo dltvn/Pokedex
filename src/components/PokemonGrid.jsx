@@ -17,7 +17,7 @@ export default function PokemonGrid({ pokemon, onAddToTeam, onPokemonClick }) {
               onMouseEnter={() => setHoveredPokemon(pokemon.id)}
               onMouseLeave={() => setHoveredPokemon(null)}
             >
-              <div className="text-center text-xs font-medium mb-1 truncate w-full">
+              <div className="text-center text-xs font-medium mb-1 truncate w-full capitalize">
                 {pokemon.name}
               </div>
               <div
