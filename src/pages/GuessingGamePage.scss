@@ -1,6 +1,8 @@
-body{
-    overflow: hidden ;
-    
+body {
+    overflow-y: auto; /* Allow vertical scrolling */
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 .page {
@@ -10,17 +12,16 @@ body{
     border: solid 2px black;
     min-height: 100%;
     border-top: 0px !important;
+    overflow-y: auto; /* Allow scrolling in the page */
 }
 
 .half_page {
     flex: 1;
-    display: fixed;
+    display: flex;
     flex-direction: column;
     gap: 1.25rem;
     align-items: center;
-    padding: 0;
     padding: 1.75rem;
-    
 }
 
 .game_info {
@@ -45,6 +46,7 @@ body{
 .option_button.correct {
     background-color: #52ae61;
 }
+
 .option_button.incorrect {
     background-color: #dc0c2e;
 }
@@ -70,23 +72,35 @@ body{
 .card {
     flex: 1;
     border: solid 2px #aca7a6;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
 }
 
 .card h2 {
-    border-bottom: solid 2px #aca7a6;
+    top: 0;
+    left: 0;
+    right: 0;
     padding: 0.5rem;
+    position: absolute;
+    border-bottom: solid 2px #aca7a6;
+    
     text-align: center;
     width: 100%;
 }
+
 .card img {
     object-fit: cover;
-    padding: 0;
-    margin-left: 7rem;
-
+    height: 80%;
+    
+     
 }
 
 .timer {
-    margin-top: 0.5rem;
+    margin-top: 0rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -94,6 +108,7 @@ body{
     border: solid 2px #aca7a6;
     border-radius: 25px;
 }
+
 .timer button {
     flex: 1;
     padding: 0.5rem;
@@ -101,18 +116,50 @@ body{
     background-color: #aca7a6;
     height: 100%;
 }
+
 .timer h2 {
     flex: 1;
     text-align: center;
     padding: 0.5rem;
 }
 
+/* Media query for tablets and larger screens (min-width: 768px) */
 @media only screen and (min-width: 768px) {
     .page {
         flex-direction: row;
         border: solid 1px black;
     }
+
     .half_page {
         border: solid 1px black;
+        width: 50%; 
+    }
+    
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile screens */
+    .answer_options {
+        margin-top: 1.25rem;
+    }
+
+   
+    .card {
+        height: auto; 
+    }
+
+    .card img {
+       
+        padding-top: 2rem;
+      
+    }
+
+    .game_info {
+        flex-direction: column;
+    }
+
+    /* Allow the page to be scrollable when content overflows */
+    .page {
+        overflow-y: auto;
     }
 }
