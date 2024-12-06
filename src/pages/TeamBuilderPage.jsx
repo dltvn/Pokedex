@@ -23,6 +23,7 @@ export default function TeamBuilderPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [pokemonUrl, setPokemonUrl] = useState();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
 
   useEffect(() => {
     fetchPokemonList();
@@ -47,6 +48,10 @@ export default function TeamBuilderPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); // Toggle the dropdown
   };
 
   const handlePokemonClick = (pokemon) => {
@@ -111,30 +116,89 @@ export default function TeamBuilderPage() {
     );
   }
 
-  return (
-    <div className="flex gap-8 p-8 font-mono bg-[#f8f0f0] min-h-screen">
-      <TeamList
-        teams={teams}
-        selectedTeam={selectedTeam}
-        onSelectTeam={setSelectedTeam}
-        onUpdateTeamName={updateTeamName}
-      />
-
-      <div className="flex-1 space-y-6">
-        <PokemonSearch searchTerm={searchTerm} onSearchChange={handleSearch} />
-        <TeamPokemon
-          team={teams[selectedTeam - 1]}
-          onRemovePokemon={removeFromTeam}
-          onPokemonClick={handlePokemonClick}
+  return ( 
+    <div className="flex flex-col md:flex-row gap-4 md:p-4 bg-[#f8f0f0] min-h-screen">
+      {/* Mobile Dropdown Menu */}
+      <div className="md:hidden relative">
+        <div
+          onClick={toggleDropdown}
+          className=" teamMenu cursor-pointer text-black px-4 py-2 flex justify-between items-center"
+        >
+          <span>{teams.find((team) => team.id === selectedTeam)?.name}</span>
+          <span>{isDropdownOpen ? "▲" : "▼"}</span>
+        </div>
+        {isDropdownOpen && (
+          <div className="absolute left-0 w-full shadow-lg mt-2 z-10 h-[calc(100vh-50px)] bg-poke_blue bg-opacity-20 backdrop-blur-md ">
+            <div className="fixed inset-0 m-4 items-center">
+            <TeamList
+              teams={teams}
+              selectedTeam={selectedTeam}
+              onSelectTeam={(teamId) => {
+                setSelectedTeam(teamId);
+                toggleDropdown();
+              }}
+              onUpdateTeamName={updateTeamName}
         />
+        </div>
+            {/* {teams.map((team) => (
+              <div
+                key={team.id}
+                onClick={() => selectTeam(team.id)}
+                className={`cursor-pointer px-4 py-2 border-b hover:bg-gray-100 ${
+                  selectedTeam === team.id ? "bg-poke_blue text-white" : ""
+                }`}
+              >
+                {team.name}
+              </div>
+            ))} */}
+          </div>
+          
+        // <TeamList
+        //   teams={teams}
+        //   selectedTeam={selectedTeam}
+        //   onSelectTeam={setSelectedTeam}
+        //   onUpdateTeamName={updateTeamName}
+        // />
 
-        <PokemonGrid
-          pokemon={filteredPokemon}
-          onPokemonClick={(pokemon) => {
-            addToTeam(pokemon);
-          }}
+
+
+
+        )}
+      </div>
+      <div className="hidden md:block">
+        <TeamList
+          teams={teams}
+          selectedTeam={selectedTeam}
+          onSelectTeam={setSelectedTeam}
+          onUpdateTeamName={updateTeamName}
         />
       </div>
+
+      <div className="flex-1 space-y-6">
+        <div className="hidden md:block">
+          <PokemonSearch searchTerm={searchTerm} onSearchChange={handleSearch} />
+        </div>
+        
+        <div className="aspect-square flex flex-col-2 text-center text-xl md:text-2xl cursor-pointer">
+          <TeamPokemon
+            team={teams[selectedTeam - 1]}
+            onRemovePokemon={removeFromTeam}
+            onPokemonClick={handlePokemonClick}
+          />
+        </div>
+
+        {/* <div className="hidden md:block"> */}
+          <PokemonGrid
+            pokemon={filteredPokemon}
+            onPokemonClick={(pokemon) => {
+              addToTeam(pokemon);
+            }}
+          />
+
+      </div>
+
+      
+
 
       {modalIsOpen && (
         <PokemonModal
