@@ -64,7 +64,7 @@ function SearchPage() {
               .map((pokemon, i) => (
                 <li
                   key={i}
-                  className="p-3 border-2 border-gray25 cursor-pointer"
+                  className="p-3 border-2 border-gray25 cursor-pointer capitalize"
                   onClick={() => handlePokemonClick(pokemon.url)}
                 >
                   {pokemon.name}
