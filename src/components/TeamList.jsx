@@ -36,7 +36,7 @@ export default function TeamList({ teams, selectedTeam, onSelectTeam, onUpdateTe
               onClick={() => onSelectTeam(team.id)} // Single-click to select
               onDoubleClick={() => handleDoubleClick(team.id, team.name)} // Double-click anywhere on the box to edit
               className={`p-2 border-2 border-gray-300 cursor-pointer bg-[#f0f0f0] 
-                ${selectedTeam === team.id ? 'bg-poke_blue text-white' : ''}`}
+                ${selectedTeam === team.id ? 'bg-blue-500 text-white' : ''}`}
             >
               {editingTeamId === team.id ? (
                 <input
