@@ -75,8 +75,8 @@ function PokedexPage() {
               onClick={() => handlePokemonClick(pokemon.id)}
             >
               <h2
-                className={
-                  pokemon.types.length === 1
+                className={"capitalize " +
+                  (pokemon.types.length === 1
                     ? `bg-poke_${pokemon.types[0].type.name}`
                     : "bg-gradient-to-r " +
                       pokemon.types
@@ -86,7 +86,7 @@ function PokedexPage() {
                             return `to-poke_${name}`;
                           return `via-poke_${name}`;
                         })
-                        .join(" ")
+                        .join(" "))
                 }
               >
                 {pokemon.name}
