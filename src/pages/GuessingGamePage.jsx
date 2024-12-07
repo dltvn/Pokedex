@@ -118,13 +118,27 @@ function GuessingGamePage() {
         return hearts;
     }
 
+    const returnPokemonTypesGradient = () => {
+        return (correctAnswer.types.length === 1
+            ? `bg-poke_${correctAnswer.types[0].type.name}`
+            : "bg-gradient-to-r " +
+            correctAnswer.types
+            .map(({ type: { name } }, i) => {
+                if (i === 0) return `from-poke_${name}`;
+                if (i === correctAnswer.types.length - 1)
+                return `to-poke_${name}`;
+                return `via-poke_${name}`;
+            })
+            .join(" "));
+    }
+
     if(pokemonList.length === 0) return <div className="page"><h2 className="loading">Loading...</h2></div>;
 
     return (
         <div className="page">
             <div className="half_page">
                 <div className="card">
-                    <h2>{gameStatus === "finished" ? capitalizeWord(correctAnswer.name) : "Who's that pokemon?"}</h2>
+                    <h2 className={gameStatus === "finished" ? returnPokemonTypesGradient() : ""}>{(gameStatus === "finished" ? capitalizeWord(correctAnswer.name) : "Who's that pokemon?")}</h2>
                     <img src={correctAnswer.sprites.other['official-artwork'].front_default} style={processImage()}></img>
                 </div>
                 <div className="timer">

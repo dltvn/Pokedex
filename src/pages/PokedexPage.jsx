@@ -71,7 +71,7 @@ function PokedexPage() {
           {filteredPokemon.map(({ pokemon }, i) => (
             <div
               key={i}
-              className="aspect-square flex flex-col text-center text-xl md:text-2xl cursor-pointer"
+              className="aspect-square border-2 rounded border-gray25 flex flex-col text-center text-xl md:text-2xl cursor-pointer"
               onClick={() => handlePokemonClick(pokemon.id)}
             >
               <h2
@@ -92,7 +92,7 @@ function PokedexPage() {
                 {pokemon.name}
               </h2>
 
-              <div className="flex-1 border-2 border-gray25 flex items-center justify-center">
+              <div className="flex-1 border-t-2 border-gray25 flex items-center justify-center">
                 <img
                   src={
                     pokemon.sprites["front_default"] ||
