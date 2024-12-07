@@ -70,10 +70,14 @@ function GuessingGamePage() {
         if (gameStatus !== "active") return;
         
         if (name === correctAnswer.name) {
+            const audio = new Audio('/sounds/correct-option.mp3'); // Path to your sound file
+            audio.play();
             event.target.className = "option_button correct";
             setMessage("You Won!");
             setGameStatus("finished");
         } else {
+            const audio = new Audio('/sounds/wrong-option.mp3'); // Path to your sound file
+            audio.play();
             event.target.className = "option_button incorrect";
             setMessage("Wrong... Try Again!")
             setFailedAttempts((prev) => {
@@ -89,6 +93,8 @@ function GuessingGamePage() {
     };
 
     const startGame = () => {
+        const audio = new Audio('/sounds/whos-that-pokemon.mp3'); // Path to your sound file
+        audio.play();
         setGameStatus("active");
         setMessage("Select an Option!");
     };
