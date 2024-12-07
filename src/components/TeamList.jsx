@@ -41,6 +41,7 @@ export default function TeamList({ teams, selectedTeam, onSelectTeam, onUpdateTe
               {editingTeamId === team.id ? (
                 <input
                   type="text"
+                  placeholder="Name the team"
                   value={newTeamName}
                   onChange={handleChange}
                   onBlur={handleBlur}
