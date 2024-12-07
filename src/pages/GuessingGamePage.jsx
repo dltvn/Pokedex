@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FaHeart } from "react-icons/fa";
 
 import "./GuessingGamePage.scss"
 
@@ -103,6 +104,12 @@ function GuessingGamePage() {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+    const returnHeartsList = () => {
+        const hearts = [];
+        for(let i = 0; i < maxFailedAttempts-failedAttempts; i++) hearts.push(<FaHeart/>);
+        return hearts;
+    }
+
     if(pokemonList.length === 0) return <div className="page"><h2 className="loading">Loading...</h2></div>;
 
     return (
@@ -120,7 +127,9 @@ function GuessingGamePage() {
             <div className="half_page">
                 <div className="game_info">
                     <h2 id="game_message">{message}</h2>
-                    <h2 id="game_message">Lives: {maxFailedAttempts-failedAttempts}</h2>
+                    <div className="hearts">
+                        {returnHeartsList()}
+                    </div>
                 </div>
                 {gameStatus === "initial" ? "" :
                 <div className="answer_options">
