@@ -7,14 +7,7 @@ import TeamList from "../components/TeamList";
 import PokemonModal from "../components/PokemonModal";
 
 export default function TeamBuilderPage() {
-  const [teams, setTeams] = useState([
-    { id: 1, name: "Team #1", pokemon: [] },
-    { id: 2, name: "Team #2", pokemon: [] },
-    { id: 3, name: "Team #3", pokemon: [] },
-    { id: 4, name: "Team #4", pokemon: [] },
-    { id: 5, name: "Team #5", pokemon: [] },
-    { id: 6, name: "Team #6", pokemon: [] },
-  ]);
+  const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(1);
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +18,13 @@ export default function TeamBuilderPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    const storedTeams = JSON.parse(localStorage.getItem("teams"));
+    if (storedTeams && storedTeams.length === 6) {
+      setTeams(storedTeams);
+    } else {
+      initializeTeams();
+    }
+
     fetchPokemonList();
   }, []);
 
@@ -58,41 +58,55 @@ export default function TeamBuilderPage() {
     setSearchTerm(searchQuery);
   };
 
-  const addToTeam = (newPokemon) => {
+  const addToTeam = async (newPokemon) => {
     if (selectedTeam === 0) return;
-    setTeams(
-      teams.map((team) => {
-        if (team.id === selectedTeam && team.pokemon.length < 6) {
-          return {
-            ...team,
-            pokemon: [...team.pokemon, newPokemon],
-          };
-        }
-        return team;
-      })
-    );
+
+    const updatedTeams = teams.map((team) => {
+      if (team.id === selectedTeam && team.pokemon.length < 6) {
+        return {
+          ...team,
+          pokemon: [...team.pokemon, newPokemon],
+        };
+      }
+      return team;
+    });
+    setTeams(updatedTeams);
+    localStorage.setItem("teams", JSON.stringify(updatedTeams));
   };
 
-  const removeFromTeam = (pokemonIndex) => {
-    setTeams(
-      teams.map((team) => {
-        if (team.id === selectedTeam) {
-          return {
-            ...team,
-            pokemon: team.pokemon.filter((_, index) => index !== pokemonIndex),
-          };
-        }
-        return team;
-      })
-    );
+  const removeFromTeam = async (pokemonIndex) => {
+    const updatedTeams = teams.map((team) => {
+      if (team.id === selectedTeam) {
+        return {
+          ...team,
+          pokemon: team.pokemon.filter((_, index) => index !== pokemonIndex),
+        };
+      }
+      return team;
+    });
+    setTeams(updatedTeams);
+    localStorage.setItem("teams", JSON.stringify(updatedTeams));
   };
 
-  const updateTeamName = (teamId, newName) => {
-    setTeams(
-      teams.map((team) =>
-        team.id === teamId ? { ...team, name: newName } : team
-      )
+  const updateTeamName = async (teamId, newName) => {
+    const updatedTeams = teams.map((team) =>
+      team.id === teamId ? { ...team, name: newName } : team
     );
+    setTeams(updatedTeams);
+    localStorage.setItem("teams", JSON.stringify(updatedTeams));
+  };
+
+  const initializeTeams = () => {
+    const defaultTeams = [
+      { id: 1, name: "Team 1", pokemon: [] },
+      { id: 2, name: "Team 2", pokemon: [] },
+      { id: 3, name: "Team 3", pokemon: [] },
+      { id: 4, name: "Team 4", pokemon: [] },
+      { id: 5, name: "Team 5", pokemon: [] },
+      { id: 6, name: "Team 6", pokemon: [] },
+    ];
+    setTeams(defaultTeams);
+    localStorage.setItem("teams", JSON.stringify(defaultTeams));
   };
 
   if (error) {
@@ -146,4 +160,3 @@ export default function TeamBuilderPage() {
     </div>
   );
 }
-
