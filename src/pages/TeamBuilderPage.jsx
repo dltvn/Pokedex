@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import PokemonSearch from "../components/PokemonSearch";
 import PokemonGrid from "../components/PokemonGrid";
@@ -10,117 +10,95 @@ export default function TeamBuilderPage() {
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(1);
   const [pokemonList, setPokemonList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [pokemonUrl, setPokemonUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filteredPokemon, setFilteredPokemon] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [pokemonUrl, setPokemonUrl] = useState();
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const storedTeams = JSON.parse(localStorage.getItem("teams"));
-    if (storedTeams && storedTeams.length === 6) {
-      setTeams(storedTeams);
-    } else {
-      initializeTeams();
-    }
+    const initTeams = () => {
+      const storedTeams = JSON.parse(localStorage.getItem("teams"));
+      if (storedTeams?.length === 6) {
+        return storedTeams;
+      }
+      const defaultTeams = Array.from({ length: 6 }, (_, i) => ({
+        id: i + 1,
+        name: `Team ${i + 1}`,
+        pokemon: [],
+      }));
+      localStorage.setItem("teams", JSON.stringify(defaultTeams));
+      return defaultTeams;
+    };
 
-    fetchPokemonList();
+    const initializeData = async () => {
+      try {
+        setLoading(true);
+        setTeams(initTeams());
+
+        const response = await axios.get("/api/pokemon/users");
+        setPokemonList(response.data.pokemons || []);
+      } catch (err) {
+        console.error("Error fetching Pokémon list:", err);
+        setError("Failed to load Pokémon list.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeData();
   }, []);
 
-  useEffect(() => {
-    const filtered = pokemonList.filter(({ pokemon }) =>
+  const filteredPokemon = useMemo(() => {
+    return pokemonList.filter(({ pokemon }) =>
       pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilteredPokemon(filtered);
   }, [searchTerm, pokemonList]);
 
-  const fetchPokemonList = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("/api/pokemon/users");
-      setPokemonList(response.data.pokemons || []);
-      setFilteredPokemon(response.data.pokemons || []);
-    } catch (err) {
-      console.error("Error fetching Pokémon list:", err);
-      setError("Failed to load Pokémon list.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePokemonClick = (pokemon) => {
-    setPokemonUrl(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}/`);
-    setModalIsOpen(true);
-  };
-
-  const handleSearch = (searchQuery) => {
-    setSearchTerm(searchQuery);
-  };
-
-  const addToTeam = async (newPokemon) => {
-    if (selectedTeam === 0) return;
-
-    const updatedTeams = teams.map((team) => {
-      if (team.id === selectedTeam && team.pokemon.length < 6) {
-        return {
-          ...team,
-          pokemon: [...team.pokemon, newPokemon],
-        };
-      }
-      return team;
-    });
+  const updateTeams = (updatedTeams) => {
     setTeams(updatedTeams);
     localStorage.setItem("teams", JSON.stringify(updatedTeams));
   };
 
-  const removeFromTeam = async (pokemonIndex) => {
-    const updatedTeams = teams.map((team) => {
-      if (team.id === selectedTeam) {
-        return {
-          ...team,
-          pokemon: team.pokemon.filter((_, index) => index !== pokemonIndex),
-        };
-      }
-      return team;
+  const addToTeam = (newPokemon) => {
+    setTeams((prevTeams) => {
+      const updatedTeams = prevTeams.map((team) =>
+        team.id === selectedTeam && team.pokemon.length < 6
+          ? { ...team, pokemon: [...team.pokemon, newPokemon] }
+          : team
+      );
+      localStorage.setItem("teams", JSON.stringify(updatedTeams));
+      return updatedTeams;
     });
-    setTeams(updatedTeams);
-    localStorage.setItem("teams", JSON.stringify(updatedTeams));
   };
 
-  const updateTeamName = async (teamId, newName) => {
-    const updatedTeams = teams.map((team) =>
-      team.id === teamId ? { ...team, name: newName } : team
+  const removeFromTeam = (pokemonIndex) => {
+    setTeams((prevTeams) => {
+      const updatedTeams = prevTeams.map((team) =>
+        team.id === selectedTeam
+          ? {
+              ...team,
+              pokemon: team.pokemon.filter((_, index) => index !== pokemonIndex),
+            }
+          : team
+      );
+      localStorage.setItem("teams", JSON.stringify(updatedTeams));
+      return updatedTeams;
+    });
+  };
+
+  const updateTeamName = (teamId, newName) => {
+    setTeams((prevTeams) =>
+      prevTeams.map((team) =>
+        team.id === teamId ? { ...team, name: newName } : team
+      )
     );
-    setTeams(updatedTeams);
-    localStorage.setItem("teams", JSON.stringify(updatedTeams));
   };
 
-  const initializeTeams = () => {
-    const defaultTeams = [
-      { id: 1, name: "Team 1", pokemon: [] },
-      { id: 2, name: "Team 2", pokemon: [] },
-      { id: 3, name: "Team 3", pokemon: [] },
-      { id: 4, name: "Team 4", pokemon: [] },
-      { id: 5, name: "Team 5", pokemon: [] },
-      { id: 6, name: "Team 6", pokemon: [] },
-    ];
-    setTeams(defaultTeams);
-    localStorage.setItem("teams", JSON.stringify(defaultTeams));
-  };
-
-  if (error) {
+  if (loading || error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>{error}</p>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        Loading...
+        {error ? <p>{error}</p> : <p>Loading...</p>}
       </div>
     );
   }
@@ -135,18 +113,18 @@ export default function TeamBuilderPage() {
       />
 
       <div className="flex-1 space-y-6">
-        <PokemonSearch searchTerm={searchTerm} onSearchChange={handleSearch} />
+        <PokemonSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         <TeamPokemon
-          team={teams[selectedTeam - 1]}
+          team={teams.find((team) => team.id === selectedTeam)}
           onRemovePokemon={removeFromTeam}
-          onPokemonClick={handlePokemonClick}
+          onPokemonClick={(pokemon) => {
+            setPokemonUrl(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}/`);
+            setModalIsOpen(true);
+          }}
         />
-
         <PokemonGrid
           pokemon={filteredPokemon}
-          onPokemonClick={(pokemon) => {
-            addToTeam(pokemon);
-          }}
+          onPokemonClick={(pokemon) => addToTeam(pokemon)}
         />
       </div>
 

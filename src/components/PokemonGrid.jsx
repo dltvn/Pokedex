@@ -13,20 +13,17 @@ export default function PokemonGrid({ pokemon, onAddToTeam, onPokemonClick }) {
               className={`flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-300 ease-in-out cursor-pointer
                           ${hoveredPokemon === pokemon.id ? "bg-blue-100 scale-105" : "hover:bg-gray-100"}
                           border border-transparent hover:border-gray-300`}
-              onClick={() => onAddToTeam(pokemon)} // Only handles adding to the team
               onMouseEnter={() => setHoveredPokemon(pokemon.id)}
               onMouseLeave={() => setHoveredPokemon(null)}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent the parent `onClick` from triggering
+                onPokemonClick(pokemon);
+              }}
             >
               <div className="text-center text-xs font-medium mb-1 truncate w-full capitalize">
                 {pokemon.name}
               </div>
-              <div
-                className="relative w-12 h-12 bg-gray-200 rounded-full overflow-hidden"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent the parent `onClick` from triggering
-                  onPokemonClick(pokemon); // Handles modal or other click actions
-                }}
-              >
+              <div className="relative w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
                 <img
                   src={pokemon.sprites.front_default || "/images/default-pokemon.png"}
                   alt={pokemon.name}

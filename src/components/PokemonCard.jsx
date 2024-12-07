@@ -21,10 +21,16 @@ export default function PokemonCard({ pokemon, onRemove, onPokemonClick }) {
   const backgroundClass = getBackgroundClass(pokemon.types);
 
   return (
-    <div className="w-48 border-2 border-gray-300 bg-[#f0f0f0] relative hover:shadow-lg transition-shadow duration-300">
+    <div
+      className="w-48 border-2 border-gray-300 bg-[#f0f0f0] relative hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+      onClick={onPokemonClick} // Make the entire card clickable
+    >
       {onRemove && (
         <button
-          onClick={onRemove}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent triggering the card click when the button is clicked
+            onRemove();
+          }}
           className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full 
                    flex items-center justify-center hover:bg-red-600"
         >
@@ -46,7 +52,6 @@ export default function PokemonCard({ pokemon, onRemove, onPokemonClick }) {
           alt={pokemon.name}
           className="w-24 h-24 z-10 pixelated cursor-pointer transition-transform duration-300 group-hover:scale-125"
           style={{ imageRendering: "pixelated" }}
-          onClick={onPokemonClick}
         />
       </div>
     </div>
