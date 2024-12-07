@@ -55,7 +55,7 @@ function GuessingGamePage() {
             let timer = setInterval(() => {
             setTimeLeft((prev) => {
               if (prev === 0) {
-                setMessage("Time's up! You lost.");
+                setMessage("Time's Up! You Lost.");
                 setGameStatus("finished");
                 clearInterval(timer);
                 return 0;
@@ -71,14 +71,15 @@ function GuessingGamePage() {
         
         if (name === correctAnswer.name) {
             event.target.className = "option_button correct";
-            setMessage("You won!");
+            setMessage("You Won!");
             setGameStatus("finished");
         } else {
             event.target.className = "option_button incorrect";
+            setMessage("Wrong... Try Again!")
             setFailedAttempts((prev) => {
                 const newAttempts = prev + 1;
                 if (newAttempts >= maxFailedAttempts) {
-                    setMessage("You lost! Too many wrong attempts.");
+                    setMessage("You Lost! Too Many Wrong Attempts.");
                     setGameStatus("finished");
                 }
                 return newAttempts;
@@ -89,6 +90,7 @@ function GuessingGamePage() {
 
     const startGame = () => {
         setGameStatus("active");
+        setMessage("Select an Option!");
     };
 
     const playAgain = () => {
