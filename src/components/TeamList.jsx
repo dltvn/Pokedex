@@ -1,72 +1,83 @@
 import React, { useState } from "react";
 
-export default function TeamList({ teams, selectedTeam, onSelectTeam, onUpdateTeamName }) {
-  const [editingTeamId, setEditingTeamId] = useState(null);
-  const [newTeamName, setNewTeamName] = useState('');
+export default function TeamList({ teams, selectedTeam, onSelectTeam, onUpdateTeamName, isDropdown }) {
+  const [editingTeamId, setEditingTeamId] = useState(null); // ID of the team being edited
+  const [newTeamName, setNewTeamName] = useState(''); // New name for the team being edited
 
-  const handleDoubleClick = (teamId, currentName) => {
+  const handleEditClick = (teamId, currentName, event) => { // Start editing a team name
+    event.stopPropagation();
     setEditingTeamId(teamId);
     setNewTeamName(currentName);
   };
 
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setNewTeamName(newValue);
-
-    if (editingTeamId && newValue.trim() !== '') {
-      onUpdateTeamName(editingTeamId, newValue);
-    }
+  const handleChange = (e) => { // Handle changes to the team name input
+    setNewTeamName(e.target.value);
   };
 
-  const handleBlur = () => {
+  const handleSave = (teamId, event) => { // Save the new team name
+    event.stopPropagation();
+    if (newTeamName.trim() !== '') {
+      onUpdateTeamName(teamId, newTeamName);
+    }
     setEditingTeamId(null);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e, teamId) => { // Handle Enter key press to save team name
     if (e.key === "Enter") {
-      handleBlur();
+      handleSave(teamId, e);
     }
   };
 
   return (
-    <div className="w-64 space-y-4">
-      <div className="space-y-2">
-        {teams.map((team) => (
-          <div key={team.id} className="space-y-2">
-            <div
-              onClick={() => onSelectTeam(team.id)}
-              onDoubleClick={() => handleDoubleClick(team.id, team.name)}
-              className={`p-2 border-2 border-gray-300 cursor-pointer bg-[#f0f0f0] ${selectedTeam === team.id ? 'bg-poke_blue text-white' : ''}`}
-              style={{ minHeight: '40px', display: 'flex', alignItems: 'center' }}
-            >
-              {editingTeamId === team.id ? (
-                <div className="w-full" style={{ minHeight: '24px' }}>
-                  <input
-                    type="text"
-                    maxLength={15}
-                    placeholder={newTeamName.trim() === '' ? 'Name the team' : ''}
-                    value={newTeamName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    onKeyDown={handleKeyDown}
-                    autoFocus
-                    className="w-full text-black rounded"
-                    style={{
-                      boxSizing: 'border-box',
-                      minHeight: '24px',
-                      height: '100%',
-                      padding: '2px 4px',
-                      border: '1px solid #ccc',
-                    }}
-                  />
-                </div>
-              ) : (
-                <span className="text-black">{team.name}</span>
-              )}
-            </div>
+    <div className={`w-full ${isDropdown ? '' : 'md:w-64'} space-y-2`}>
+      {teams.map((team) => (
+        <div
+          key={team.id}
+          onClick={() => onSelectTeam(team.id)}
+          className={`p-2 border-2 border-gray-300 cursor-pointer bg-[#f0f0f0] ${
+            selectedTeam === team.id ? 'bg-poke_blue text-white' : ''
+          } flex items-center justify-between rounded-md`}
+        >
+          <div className="flex-grow flex items-center">
+            {editingTeamId === team.id ? ( // Render input field when editing
+              <input
+                type="text"
+                maxLength={15}
+                value={newTeamName}
+                onChange={handleChange}
+                onKeyDown={(e) => handleKeyDown(e, team.id)}
+                autoFocus
+                className="w-full text-black rounded p-1"
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <span className={selectedTeam === team.id ? 'text-white' : 'text-black'}>
+                {team.name}
+              </span>
+            )}
           </div>
-        ))}
-      </div>
+          <div className="flex items-center">
+            {editingTeamId === team.id ? ( // Render save button when editing
+              <button
+                onClick={(e) => handleSave(team.id, e)}
+                className="ml-2 p-1 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                aria-label="Save team name"
+              >
+                ✓
+              </button>
+            ) : ( // Render edit button when not editing
+              <button
+                onClick={(e) => handleEditClick(team.id, team.name, e)}
+                className="ml-2 p-1 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                aria-label="Edit team name"
+              >
+                ✎
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
+

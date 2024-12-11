@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";   // Pokemon Team builder page imports
 import axios from "axios";
 import PokemonSearch from "../components/PokemonSearch";
 import PokemonGrid from "../components/PokemonGrid";
@@ -17,8 +17,9 @@ export default function TeamBuilderPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
-  useEffect(() => {
+  useEffect(() => { // Local storage functionality
     const initTeams = () => {
       const storedTeams = JSON.parse(localStorage.getItem("teams"));
       if (storedTeams?.length === 6) {
@@ -33,7 +34,7 @@ export default function TeamBuilderPage() {
       return defaultTeams;
     };
 
-    const initializeData = async () => {
+    const initializeData = async () => { // Grabbing pokemon that the user caught
       try {
         setLoading(true);
         setTeams(initTeams());
@@ -51,20 +52,29 @@ export default function TeamBuilderPage() {
     initializeData();
   }, []);
 
-  const filteredPokemon = useMemo(() => {
+  useEffect(() => { // Alert message timing
+    if (alertMessage) {
+      const timer = setTimeout(() => {
+        setAlertMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMessage]);
+
+  const filteredPokemon = useMemo(() => { // use memo hook to return the search and list
     return pokemonList.filter(({ pokemon }) =>
       pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, pokemonList]);
 
-  const updateTeams = (updatedTeams) => {
-    setTeams(updatedTeams);
-    localStorage.setItem("teams", JSON.stringify(updatedTeams));
-  };
-
-  const addToTeam = (newPokemon) => {
+  const addToTeam = (newPokemon) => { // adding pokemon to team
     setTeams((prevTeams) => {
-      const updatedTeams = prevTeams.map((team) =>
+      const currentTeam = prevTeams.find(team => team.id === selectedTeam);
+      if (currentTeam && currentTeam.pokemon.length >= 6) {
+        setAlertMessage("Team is full! You can't add more than 6 Pokémon.");
+        return prevTeams;
+      }
+      const updatedTeams = prevTeams.map((team) => // Updating the team
         team.id === selectedTeam && team.pokemon.length < 6
           ? { ...team, pokemon: [...team.pokemon, newPokemon] }
           : team
@@ -74,7 +84,7 @@ export default function TeamBuilderPage() {
     });
   };
 
-  const removeFromTeam = (pokemonIndex) => {
+  const removeFromTeam = (pokemonIndex) => { // Removing From team
     setTeams((prevTeams) => {
       const updatedTeams = prevTeams.map((team) =>
         team.id === selectedTeam
@@ -89,7 +99,7 @@ export default function TeamBuilderPage() {
     });
   };
 
-  const updateTeamName = (teamId, newName) => {
+  const updateTeamName = (teamId, newName) => {  // Team naming
     setTeams((prevTeams) =>
       prevTeams.map((team) =>
         team.id === teamId ? { ...team, name: newName } : team
@@ -97,7 +107,7 @@ export default function TeamBuilderPage() {
     );
   };
 
-  if (loading || error) {
+  if (loading || error) { /// If user doesn't log in
     return (
       <div className="flex items-center justify-center min-h-screen">
         {error ? <p>{error}</p> : <p>Loading...</p>}
@@ -106,10 +116,9 @@ export default function TeamBuilderPage() {
   }
 
   return (
-    <div className="bg-[#f8f0f0] min-h-screen flex flex-col md:flex-row gap-4 md:p-4">
-
-    {/* Mobile Dropdown */}
-    <div className="md:hidden">
+    <div className="bg-[#f8f0f0] min-h-screen flex flex-col md:flex-row gap-4 p-4">
+      {/* Mobile Dropdown */}
+      <div className="md:hidden">
         <Dropdown
           teams={teams}
           selectedTeam={selectedTeam}
@@ -130,11 +139,11 @@ export default function TeamBuilderPage() {
       </div>
 
       <div className="flex-1 space-y-6">
-        <div className="hidden md:block">
+        <div className="mb-4">
           <PokemonSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         </div>
 
-        <div className="relative z-0 p-8">
+        <div className="relative z-0 p-4 md:p-8">
           <TeamPokemon
             team={teams.find((team) => team.id === selectedTeam)}
             onRemovePokemon={removeFromTeam}
@@ -144,10 +153,11 @@ export default function TeamBuilderPage() {
             }}
           />
         </div>
-        
+
         <PokemonGrid
           pokemon={filteredPokemon}
           onPokemonClick={(pokemon) => addToTeam(pokemon)}
+          className="mt-4 md:mt-0"
         />
       </div>
 
@@ -158,6 +168,13 @@ export default function TeamBuilderPage() {
           onClose={() => setModalIsOpen(false)}
         />
       )}
+
+      {alertMessage && ( // If you try to add more then 6 pokemons
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50">
+          {alertMessage}
+        </div>
+      )}
     </div>
   );
 }
+

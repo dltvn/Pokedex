@@ -1,5 +1,5 @@
 export default function PokemonCard({ pokemon, onRemove, onPokemonClick }) {
-  const getBackgroundClass = (types) => {
+  const getBackgroundClass = (types) => { // Generate background class based on Pokemon types
     if (!types || types.length === 0) return "bg-poke_normal";
 
     if (types.length === 1) {
@@ -22,10 +22,10 @@ export default function PokemonCard({ pokemon, onRemove, onPokemonClick }) {
 
   return (
     <div
-      className="w-48 border-2 border-gray-300 bg-[#f0f0f0] relative hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+      className="w-full max-w-[12rem] border-2 border-gray-300 bg-[#f0f0f0] relative hover:shadow-lg transition-shadow duration-300 cursor-pointer"
       onClick={onPokemonClick} // Make the entire card clickable
     >
-      {onRemove && (
+      {onRemove && ( // Render remove button if onRemove prop is provided
         <button
           onClick={(e) => {
             e.stopPropagation(); // Prevent triggering the card click when the button is clicked
@@ -42,18 +42,19 @@ export default function PokemonCard({ pokemon, onRemove, onPokemonClick }) {
       >
         {pokemon.name}
       </div>
-      <div className="p-8 flex items-center justify-center relative group">
+      <div className="p-4 md:p-8 flex items-center justify-center relative group">
         {/* Grey Circle Background */}
-        <div className="absolute w-28 h-28 bg-gray-200 rounded-full z-0 group-hover:scale-110 transition-transform duration-300"></div>
+        <div className="absolute w-20 h-20 md:w-28 md:h-28 bg-gray-200 rounded-full z-0 group-hover:scale-110 transition-transform duration-300"></div>
 
         {/* Pokémon Image */}
         <img
           src={pokemon.sprites?.front_default || "/images/default-pokemon.png"}
           alt={pokemon.name}
-          className="w-24 h-24 z-10 pixelated cursor-pointer transition-transform duration-300 group-hover:scale-125"
+          className="w-16 h-16 md:w-24 md:h-24 z-10 pixelated cursor-pointer transition-transform duration-300 group-hover:scale-125"
           style={{ imageRendering: "pixelated" }}
         />
       </div>
     </div>
   );
 }
+

@@ -1,11 +1,12 @@
-export default function PokemonSearch({ searchTerm, onSearchChange }) {
+export default function PokemonSearch({ searchTerm, onSearchChange }) { // Seach bar function in Team builder Page
   return (
     <input
       type="text"
       placeholder="Search Pokémon..."
-      value={searchTerm} // Controlled input value
-      onChange={(e) => onSearchChange(e.target.value)} // Updates searchTerm
-      className="w-full p-4 border-2 border-gray-400 rounded-lg text-lg text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-400 shadow-md transition-all duration-300 bg-white hover:border-blue-500"
+      value={searchTerm}
+      onChange={(e) => onSearchChange(e.target.value)}
+      className="w-full p-2 md:p-4 border-2 border-gray-400 rounded-lg text-base md:text-lg text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-400 shadow-md transition-all duration-300 bg-white hover:border-blue-500"
     />
   );
 }
+
