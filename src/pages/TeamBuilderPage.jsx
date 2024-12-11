@@ -116,7 +116,7 @@ export default function TeamBuilderPage() {
   }
 
   return (
-    <div className="bg-[#f8f0f0] min-h-screen flex flex-col md:flex-row gap-4 p-4">
+    <div className="bg-[#e6dfdd] min-h-screen flex flex-col md:flex-row gap-4 p-4">
       {/* Mobile Dropdown */}
       <div className="md:hidden">
         <Dropdown

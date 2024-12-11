@@ -77,17 +77,22 @@ function SearchPage() {
         <div className="hidden sm:block flex-1 p-8">
           <div className="text-center">
             <h1 className="app-title">
-              App Name Placeholder
+              Pokedex App
             </h1>
           </div>
-          <p className="mt-6 text-gray-700 leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+          <p className="mt-6 text-black leading-relaxed">
+            The Pokedex App is a dynamic and interactive tool designed for Pokemon enthusiasts. 
+            It provides a comprehensive database of all Pokemon species, complete with detailed information on their abilities, types and stats. 
+            Users can easily search for their favorite Pokemon, view high-quality images, and learn about their characteristics. 
+            Additionally, the app allows users to create teams and play "Who's That Pokemon." 
+            This app caters to both casual Pokemon fans and hardcore collectors, allowing them to track their progress, discover new Pokemon, and enhance their Pokemon experience. 
+            Whether you're a newcomer to the series or a seasoned trainer, the Pokedex App brings the entire Pokemon universe to your fingertips.
+          </p>
+          <br></br>
+          <p>
+            Authors: @dltvn
+            @joshua_mccann
+            @john_doe
           </p>
         </div>
       </main>
