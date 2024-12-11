@@ -5,6 +5,7 @@ import PokemonGrid from "../components/PokemonGrid";
 import TeamPokemon from "../components/TeamPokemon";
 import TeamList from "../components/TeamList";
 import PokemonModal from "../components/PokemonModal";
+import Dropdown from "../components/Dropdown";
 
 export default function TeamBuilderPage() {
   const [teams, setTeams] = useState([]);
@@ -15,6 +16,7 @@ export default function TeamBuilderPage() {
   const [pokemonUrl, setPokemonUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const initTeams = () => {
@@ -104,24 +106,45 @@ export default function TeamBuilderPage() {
   }
 
   return (
-    <div className="flex gap-8 p-8 font-mono bg-[#f8f0f0] min-h-screen">
-      <TeamList
-        teams={teams}
-        selectedTeam={selectedTeam}
-        onSelectTeam={setSelectedTeam}
-        onUpdateTeamName={updateTeamName}
-      />
+    <div className="bg-[#f8f0f0] min-h-screen flex flex-col md:flex-row gap-4 md:p-4">
+
+    {/* Mobile Dropdown */}
+    <div className="md:hidden">
+        <Dropdown
+          teams={teams}
+          selectedTeam={selectedTeam}
+          onSelectTeam={setSelectedTeam}
+          onUpdateTeamName={updateTeamName}
+          isDropdownOpen={isDropdownOpen}
+          toggleDropdown={() => setIsDropdownOpen((prevState) => !prevState)}
+        />
+      </div>
+
+      <div className="hidden md:block">
+        <TeamList
+          teams={teams}
+          selectedTeam={selectedTeam}
+          onSelectTeam={setSelectedTeam}
+          onUpdateTeamName={updateTeamName}
+        />
+      </div>
 
       <div className="flex-1 space-y-6">
-        <PokemonSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-        <TeamPokemon
-          team={teams.find((team) => team.id === selectedTeam)}
-          onRemovePokemon={removeFromTeam}
-          onPokemonClick={(pokemon) => {
-            setPokemonUrl(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}/`);
-            setModalIsOpen(true);
-          }}
-        />
+        <div className="hidden md:block">
+          <PokemonSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+        </div>
+
+        <div className="relative z-0 p-8">
+          <TeamPokemon
+            team={teams.find((team) => team.id === selectedTeam)}
+            onRemovePokemon={removeFromTeam}
+            onPokemonClick={(pokemon) => {
+              setPokemonUrl(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}/`);
+              setModalIsOpen(true);
+            }}
+          />
+        </div>
+        
         <PokemonGrid
           pokemon={filteredPokemon}
           onPokemonClick={(pokemon) => addToTeam(pokemon)}

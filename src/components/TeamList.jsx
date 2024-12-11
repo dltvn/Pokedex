@@ -36,7 +36,7 @@ export default function TeamList({ teams, selectedTeam, onSelectTeam, onUpdateTe
             <div
               onClick={() => onSelectTeam(team.id)}
               onDoubleClick={() => handleDoubleClick(team.id, team.name)}
-              className={`p-2 border-2 border-gray-300 cursor-pointer bg-[#f0f0f0] ${selectedTeam === team.id ? 'bg-blue-500 text-white' : ''}`}
+              className={`p-2 border-2 border-gray-300 cursor-pointer bg-[#f0f0f0] ${selectedTeam === team.id ? 'bg-poke_blue text-white' : ''}`}
               style={{ minHeight: '40px', display: 'flex', alignItems: 'center' }}
             >
               {editingTeamId === team.id ? (
