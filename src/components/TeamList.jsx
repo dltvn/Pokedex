@@ -34,9 +34,9 @@ export default function TeamList({ teams, selectedTeam, onSelectTeam, onUpdateTe
         <div
           key={team.id}
           onClick={() => onSelectTeam(team.id)}
-          className={`p-2 border-2 border-gray-300 cursor-pointer bg-[#f0f0f0] ${
+          className={`p-2 border-2 rounded border-gray25 cursor-pointer ${
             selectedTeam === team.id ? 'bg-poke_blue text-white' : ''
-          } flex items-center justify-between rounded-md`}
+          } flex items-center justify-between`}
         >
           <div className="flex-grow flex items-center">
             {editingTeamId === team.id ? ( // Render input field when editing
