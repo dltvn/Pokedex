@@ -35,15 +35,15 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.setItem("token", null);
     toast.info("Logout successful!", {
-      position: 'top-right', // Position of the toast
-      autoClose: 3000, // Time before it disappears (ms)
-      hideProgressBar: true, // Show progress bar
-      closeOnClick: true, // Close when clicked
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
       theme: "dark",
     });
     setTimeout(() => {
       window.location.href = "/";
-    },1500);
+    }, 1500);
   };
 
   const currentLink = links.find((link) => link.path === location.pathname) || links[0];
@@ -115,26 +115,26 @@ const Header = () => {
         </div>
       )}
 
-      {/* Login Icon */}
-      {user ? (
-        <div className="flex items-center space-x-4" onClick={handleLogout}>
-          {/* User Name */}
-          <span className="text-black font-medium">{user.name || "Guest"}</span>
-          {/* User Image */}
-          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-black">
-            <img
-              src={user.picture} // User's image or default
-              alt={user.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      ) : (
-        <div
-          className="w-8 h-8 bg-red-700 rounded-full hover:bg-red-800 border-2 border-black"
-          onClick={handleLogin}
-        ></div>
-      )}
+      {/* User Info */}
+      <div className="flex items-center space-x-4">
+        {user ? (
+          <>
+            <span className="hidden md:inline-block text-black font-medium">{user.name || "Guest"}</span>
+            <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-black">
+              <img
+                src={user.picture} // User's image or default
+                alt={user.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </>
+        ) : (
+          <div
+            className="w-8 h-8 bg-red-700 rounded-full hover:bg-red-800 border-2 border-black"
+            onClick={handleLogin}
+          ></div>
+        )}
+      </div>
     </header>
   );
 };
