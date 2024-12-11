@@ -2,6 +2,7 @@ import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // React Router's useNavigate
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
   const navigate = useNavigate(); // Initialize navigate function
@@ -16,13 +17,26 @@ const LoginPage = () => {
       // Save the JWT received from your server
       localStorage.setItem("token", response.data.token);
 
-      alert("Login successful!");
+      toast.success("Login successful!", {
+        position: 'top-right', // Position of the toast
+        autoClose: 3000, // Time before it disappears (ms)
+        hideProgressBar: true, // Show progress bar
+        closeOnClick: true, // Close when clicked
+        theme: "dark",
+      });
       
-      // Navigate to /pokedex after login success
-      window.location.href = "/pokedex";
+      setTimeout(() => {
+        // Navigate to /pokedex after login success
+        window.location.href = "/pokedex";
+      }, 1000);
     } catch (error) {
       console.error("Error during server authentication:", error);
-      alert("Login failed.");
+      toast.error("Login successful!", {
+        position: 'top-right', // Position of the toast
+        autoClose: 3000, // Time before it disappears (ms)
+        hideProgressBar: true, // Show progress bar
+        closeOnClick: true, // Close when clicked
+      });
     }
   };
 

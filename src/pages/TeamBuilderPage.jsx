@@ -109,7 +109,7 @@ export default function TeamBuilderPage() {
 
   if (loading || error) { /// If user doesn't log in
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-poke_gray">
         {error ? <p>{error}</p> : <p>Loading...</p>}
       </div>
     );

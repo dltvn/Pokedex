@@ -18,10 +18,17 @@ body {
 
 .app-title {
     @apply border border-2 border-gray25 rounded-full py-3 px-5 text-3xl text-transparent bg-clip-text;
-    background-image: linear-gradient(90deg, #DC0C2E 0%, #FD7D24 20%, #F9FD24 40%, #52AE61 60%, #27ABFF 80%, #B97FC9 100%);
+    background-image: linear-gradient(90deg, #DC0C2E 35%, #ffcf00 50%, #52AE61 55%, #27ABFF 60%, #B97FC9 65%);
 }
 
 .dot-list li::before {
     content: "•";
     margin-right: 0.5em;
+}
+
+/* toastify css customize */
+.Toastify__toast {
+    border-radius: 2px;
+    font-family: "Pixelify Sans", sans-serif;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
