@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PokemonModal from "../components/PokemonModal";
+import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 const MAX_POKEMON = 300;
 
@@ -74,7 +75,7 @@ function SearchPage() {
         </div>
 
         {/* Right Panel */}
-        <div className="hidden sm:block flex-1 p-8">
+        <div className="hidden sm:block flex-1 p-8 text-xl">
           <div className="text-center">
             <h1 className="app-title">
               Pokedex App
@@ -88,12 +89,74 @@ function SearchPage() {
             This app caters to both casual Pokemon fans and hardcore collectors, allowing them to track their progress, discover new Pokemon, and enhance their Pokemon experience. 
             Whether you're a newcomer to the series or a seasoned trainer, the Pokedex App brings the entire Pokemon universe to your fingertips.
           </p>
-          <br></br>
-          <p>
-            Authors: @dltvn
-            @joshua_mccann
-            @john_doe
-          </p>
+<div className="mt-6 text-black leading-relaxed">
+  <h2>Authors:</h2>
+  <ul className="space-y-4">
+    {[
+      {
+        name: "Denys",
+        github: "https://github.com/dltvn",
+        instagram: "https://instagram.com/dltvn",
+        linkedin: "https://linkedin.com/in/dltvn",
+      },
+      {
+        name: "Mina",
+        github: "https://github.com/bellella",
+        instagram: "https://www.instagram.com/minaacoco/",
+        linkedin: "https://www.linkedin.com/in/mina-choi-a04818180/",
+      },
+      {
+        name: "Jinal",
+        github: "https://github.com/jinal108",
+        instagram: "https://instagram.com/jinal108",
+        linkedin: "https://www.linkedin.com/in/jinal-patel-490293298/",
+      },
+      {
+        name: "Peggy",
+        github: "https://github.com/peggy8337",
+        instagram: "https://instagram.com/peggy8337",
+        linkedin: "https://www.linkedin.com/in/pei-chi-tseng-1364a0290?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+      },
+      {
+        name: "Saaram",
+        github: "https://github.com/SaaramRashidi",
+        instagram: "https://www.instagram.com/saaramrashidi/",
+        linkedin: "https://www.linkedin.com/in/saaramrashidi/",
+      },
+    ].map((author, index) => (
+      <li key={index} className="text-sm">
+        <span className="font-semibold">{author.name}:</span>{" "}
+        <div className="inline-flex items-center space-x-2">
+          <a
+            href={author.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-500 transition-colors"
+          >
+            <FaGithub size={20} />
+          </a>
+          <a
+            href={author.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-pink-500 transition-colors"
+          >
+            <FaInstagram size={20} />
+          </a>
+          <a
+            href={author.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-700 transition-colors"
+          >
+            <FaLinkedin size={20} />
+          </a>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
         </div>
       </main>
       <PokemonModal
