@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-export default function PokemonGrid({ pokemon, onAddToTeam, onPokemonClick }) {
+export default function PokemonGrid({ pokemon, onPokemonClick }) {
   const [hoveredPokemon, setHoveredPokemon] = useState(null);
-
+// Displays the pokemon in grid fashion at bottom of the screen
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +16,7 @@ export default function PokemonGrid({ pokemon, onAddToTeam, onPokemonClick }) {
               onMouseEnter={() => setHoveredPokemon(pokemon.id)}
               onMouseLeave={() => setHoveredPokemon(null)}
               onClick={(e) => {
-                e.stopPropagation(); // Prevent the parent `onClick` from triggering
+                e.stopPropagation(); 
                 onPokemonClick(pokemon);
               }}
             >

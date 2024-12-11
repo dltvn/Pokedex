@@ -35,12 +35,13 @@ export default function TeamList({ teams, selectedTeam, onSelectTeam, onUpdateTe
           key={team.id}
           onClick={() => onSelectTeam(team.id)}
           className={`p-2 border-2 rounded border-gray25 cursor-pointer ${
-            selectedTeam === team.id ? 'bg-poke_blue text-white' : ''
+            selectedTeam === team.id ? 'bg-poke_blue text-black' : ''
           } flex items-center justify-between`}
         >
           <div className="flex-grow flex items-center">
             {editingTeamId === team.id ? ( // Render input field when editing
               <input
+                placeholder="Enter Team Name"
                 type="text"
                 maxLength={15}
                 value={newTeamName}
@@ -51,7 +52,7 @@ export default function TeamList({ teams, selectedTeam, onSelectTeam, onUpdateTe
                 onClick={(e) => e.stopPropagation()}
               />
             ) : (
-              <span className={selectedTeam === team.id ? 'text-white' : 'text-black'}>
+              <span className={'text-black'}>
                 {team.name}
               </span>
             )}
