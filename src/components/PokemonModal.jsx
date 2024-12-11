@@ -13,8 +13,7 @@ function PokemonModal({ isOpen, onClose, pokemonUrl, onCatch }) {
 
   useEffect(() => {
     setIsCaught(userPokemonIds.includes(currentId));
-    console.log(userPokemonIds, currentId);
-  }, [currentId, pokemonUrl, userPokemonIds]);
+   }, [currentId, pokemonUrl, userPokemonIds]);
 
   useEffect(() => {
     if (isOpen && pokemonUrl) {
