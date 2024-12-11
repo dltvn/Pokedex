@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaBars } from "react-icons/fa";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 const links = [
   { path: "/search", label: "Search" },
@@ -33,7 +34,16 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.setItem("token", null);
-    window.location.href = "/";
+    toast.info("Logout successful!", {
+      position: 'top-right', // Position of the toast
+      autoClose: 3000, // Time before it disappears (ms)
+      hideProgressBar: true, // Show progress bar
+      closeOnClick: true, // Close when clicked
+      theme: "dark",
+    });
+    setTimeout(() => {
+      window.location.href = "/";
+    },1500);
   };
 
   const currentLink = links.find((link) => link.path === location.pathname) || links[0];

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 function PokemonModal({ isOpen, onClose, pokemonUrl, onCatch }) {
   const [userPokemonIds, setUserpokemonIds] = useState([]);
@@ -75,7 +76,13 @@ function PokemonModal({ isOpen, onClose, pokemonUrl, onCatch }) {
       pokemon,
     });
     setUserpokemonIds((ids) => [...ids, pokemon.id]);
-    alert("You caught " + pokemonData.name);
+    toast("🎉 You caught " + pokemonData.name, {
+      position: 'top-right', // Position of the toast
+      autoClose: 3000, // Time before it disappears (ms)
+      hideProgressBar: true, // Show progress bar
+      closeOnClick: true, // Close when clicked
+      theme: "dark"
+    });
     onCatch?.();
   };
 

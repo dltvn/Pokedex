@@ -9,6 +9,9 @@ import axios from "axios";
 import Modal from "react-modal";
 import LoginPage from './pages/LoginPage.jsx';
 import AxiosInterceptor from './components/AxiosInterceptor.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 Modal.setAppElement("#root");
 
 function App() {
@@ -28,6 +31,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
+        <ToastContainer />
       </div>
     </Router>
   );
