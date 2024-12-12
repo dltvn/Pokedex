@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PokemonModal from "../components/PokemonModal";
+import LoadingPage from "./LoadingPage";
 
 function PokedexPage() {
   const [pokemonList, setPokemonList] = useState([]);
@@ -63,9 +64,7 @@ function PokedexPage() {
         onChange={handleSearch}
       />
       {loading ? (
-        <p className="absolute top-1/2 transform -translate-y-1/2 text-center w-full">
-          Loading Pokémon...
-        </p>
+        <LoadingPage/>
       ) : (
         <div className="flex-1 mt-7 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 px-6">
           {filteredPokemon.map(({ pokemon }, i) => (

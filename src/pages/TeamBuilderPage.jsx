@@ -6,6 +6,7 @@ import TeamPokemon from "../components/TeamPokemon";
 import TeamList from "../components/TeamList";
 import PokemonModal from "../components/PokemonModal";
 import Dropdown from "../components/Dropdown";
+import LoadingPage from "./LoadingPage";
 
 export default function TeamBuilderPage() {
   const [teams, setTeams] = useState([]);
@@ -107,10 +108,14 @@ export default function TeamBuilderPage() {
     );
   };
 
-  if (loading || error) { /// If user doesn't log in
+  if (loading) {
+    return <LoadingPage />;
+  }
+  
+  if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-poke_gray">
-        {error ? <p>{error}</p> : <p>Loading...</p>}
+        <p>{error}</p>
       </div>
     );
   }
