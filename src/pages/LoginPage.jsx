@@ -31,7 +31,7 @@ const LoginPage = () => {
       }, 1000);
     } catch (error) {
       console.error("Error during server authentication:", error);
-      toast.error("Login successful!", {
+      toast.error("Login failed", {
         position: 'top-right', // Position of the toast
         autoClose: 3000, // Time before it disappears (ms)
         hideProgressBar: true, // Show progress bar
