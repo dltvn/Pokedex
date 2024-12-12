@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaHeart } from "react-icons/fa";
 
 import "./GuessingGamePage.scss"
+import LoadingPage from "./LoadingPage";
 
 function GuessingGamePage() {
     const totalPokemon = 967;
@@ -156,7 +157,7 @@ function GuessingGamePage() {
     }
 
     //loading screen while the pokemons are being fetched
-    if(pokemonList.length === 0) return <div className="page"><h2 className="loading">Loading...</h2></div>;
+    if(pokemonList.length === 0) return <LoadingPage/>;
 
     return (
         <div className="page">
