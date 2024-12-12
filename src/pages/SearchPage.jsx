@@ -96,8 +96,8 @@ function SearchPage() {
       {
         name: "Denys",
         github: "https://github.com/dltvn",
-        instagram: "https://instagram.com/dltvn",
-        linkedin: "https://linkedin.com/in/dltvn",
+        instagram: "https://instagram.com/d.ltvn",
+        linkedin: "",
       },
       {
         name: "Mina",
