@@ -59,7 +59,11 @@ function GuessingGamePage() {
             let timer = setInterval(() => {
             setTimeLeft((prev) => {
               if (prev === 0) {
+                const audio = new Audio('/sounds/wrong-option.mp3');
+                audio.play();//play incorrect option sound
                 setMessage("Time's Up! You Lost.");
+                //reset streak
+                setStreak(0);
                 setGameStatus("finished");
                 clearInterval(timer);
                 return 0;
@@ -80,6 +84,10 @@ function GuessingGamePage() {
             audio.play();//play winning sound
             event.target.className = "option_button correct";//set class for styling
             setMessage("You Won!");
+            //increment streak
+            setStreak((prev) => {
+                return prev + 1;
+            })
             setGameStatus("finished");//game status to finished
         } else {
             const audio = new Audio('/sounds/wrong-option.mp3');
@@ -92,6 +100,8 @@ function GuessingGamePage() {
                 //if too many wrong attempts (game lost)
                 if (newAttempts >= maxFailedAttempts) {
                     setMessage("You Lost! Too Many Wrong Attempts.");
+                    //reset streak
+                    setStreak(0);
                     setGameStatus("finished");//game status to finished
                 }
                 return newAttempts;
@@ -165,6 +175,7 @@ function GuessingGamePage() {
             <div className="half_page">
                 <div className="game_info">
                     <h2 id="game_message">{message}</h2>
+                    <h2 id="game_streak">You guessed {streak} in a row!</h2>
                     <div className="hearts">
                         {returnHeartsList()}
                     </div>
