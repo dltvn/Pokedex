@@ -48,7 +48,7 @@ export default function PokemonCard({ pokemon, onRemove, onPokemonClick }) {
 
         {/* Pokémon Image */}
         <img
-          src={pokemon.sprites?.front_default || "/images/default-pokemon.png"}
+          src={pokemon.sprites?.other['official-artwork'].front_default || "/images/default-pokemon.png"}
           alt={pokemon.name}
           className="w-16 h-16 md:w-24 md:h-24 z-10 pixelated cursor-pointer transition-transform duration-300 group-hover:scale-125"
           style={{ imageRendering: "pixelated" }}

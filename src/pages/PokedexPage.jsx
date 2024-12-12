@@ -95,7 +95,7 @@ function PokedexPage() {
               <div className="flex-1 border-t-2 border-gray25 flex items-center justify-center">
                 <img
                   src={
-                    pokemon.sprites["front_default"] ||
+                    pokemon.sprites.other['official-artwork'].front_default ||
                     "/images/default-pokemon.png"
                   }
                   alt={pokemon.name}

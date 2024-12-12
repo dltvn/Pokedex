@@ -25,7 +25,7 @@ export default function PokemonGrid({ pokemon, onPokemonClick }) {
               </div>
               <div className="relative w-8 h-8 md:w-12 md:h-12 bg-gray-200 rounded-full overflow-hidden">
                 <img
-                  src={pokemon.sprites.front_default || "/images/default-pokemon.png"}
+                  src={pokemon.sprites.other['official-artwork'].front_default || "/images/default-pokemon.png"}
                   alt={pokemon.name}
                   className="w-full h-full object-contain pixelated transform hover:scale-110 transition-transform duration-300"
                 />
