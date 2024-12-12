@@ -12,6 +12,25 @@
     }
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    @apply bg-poke_gray
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply bg-gray15
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray25
+}
 body {
     font-family: "Pixelify Sans", sans-serif;
 }
