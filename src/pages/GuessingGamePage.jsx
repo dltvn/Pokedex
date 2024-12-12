@@ -137,7 +137,7 @@ function GuessingGamePage() {
 
     const returnHeartsList = () => {
         const hearts = [];
-        for(let i = 0; i < maxFailedAttempts-failedAttempts; i++) hearts.push(<FaHeart/>);
+        for(let i = 0; i < maxFailedAttempts-failedAttempts; i++) hearts.push(<FaHeart key={i}/>);
         return hearts;
     }
 
@@ -178,7 +178,7 @@ function GuessingGamePage() {
                     <h2 id="game_message">{message}</h2>
                     <h2 id="game_streak">You guessed {streak} in a row!</h2>
                     <div className="hearts">
-                        {returnHeartsList()}
+                    {returnHeartsList()}
                     </div>
                 </div>
                 {gameStatus === "initial" ? "" :
