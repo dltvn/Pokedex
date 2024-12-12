@@ -15,13 +15,16 @@ function GuessingGamePage() {
     const [failedAttempts, setFailedAttempts] = useState(0)
     const [timeLeft, setTimeLeft] = useState(0);
     const [message, setMessage] = useState("");
+    const [streak, setStreak] = useState(0);
 
+    //get random int between min and max
     const randomInt = (min, max) => {
         const minCeiled = Math.ceil(min);
         const maxFloored = Math.floor(max);
         return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
     }
 
+    //fetch pokemon data by id
     const fetchPokemon = async(id) => {
         try {
             const {data} = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -31,7 +34,7 @@ function GuessingGamePage() {
         }
     }
 
-
+    // fetch answer options, set the pokemon list of options, set correct answer, reset failed attempts, reset message, reset time left. Run on initial game status.
     useEffect(() => {
         const initializeGame = async () => {
             const newPokemonList = [];
@@ -50,6 +53,7 @@ function GuessingGamePage() {
         if(gameStatus === "initial") initializeGame();
     }, [gameStatus])
 
+    //start the timer on active game state, if the timer ends, set game to finished and message to loosing message.
     useEffect(() => {
         if(gameStatus === "active") {
             let timer = setInterval(() => {
@@ -66,48 +70,56 @@ function GuessingGamePage() {
         }
     }, [gameStatus])
 
+    //handles clicking on an option
     const pickOption = (event, name) => {
+        //only if the game is active
         if (gameStatus !== "active") return;
-        
+        //if correct answer
         if (name === correctAnswer.name) {
-            const audio = new Audio('/sounds/correct-option.mp3'); // Path to your sound file
-            audio.play();
-            event.target.className = "option_button correct";
+            const audio = new Audio('/sounds/correct-option.mp3');
+            audio.play();//play winning sound
+            event.target.className = "option_button correct";//set class for styling
             setMessage("You Won!");
-            setGameStatus("finished");
+            setGameStatus("finished");//game status to finished
         } else {
-            const audio = new Audio('/sounds/wrong-option.mp3'); // Path to your sound file
-            audio.play();
-            event.target.className = "option_button incorrect";
+            const audio = new Audio('/sounds/wrong-option.mp3');
+            audio.play();//play incorrect option sound
+            event.target.className = "option_button incorrect";//set class for styling
             setMessage("Wrong... Try Again!")
+            //increment wrong attempts
             setFailedAttempts((prev) => {
                 const newAttempts = prev + 1;
+                //if too many wrong attempts (game lost)
                 if (newAttempts >= maxFailedAttempts) {
                     setMessage("You Lost! Too Many Wrong Attempts.");
-                    setGameStatus("finished");
+                    setGameStatus("finished");//game status to finished
                 }
                 return newAttempts;
             });
         }
-        event.target.disabled = true;
+        event.target.disabled = true;//disable the option button after it's clicked
     };
 
+    //handles start game button
     const startGame = () => {
-        const audio = new Audio('/sounds/whos-that-pokemon.mp3'); // Path to your sound file
-        audio.play();
-        setGameStatus("active");
+        const audio = new Audio('/sounds/whos-that-pokemon.mp3');
+        audio.play();//plays the sound
+        setGameStatus("active");//game status to active, will trigger initializeGame
         setMessage("Select an Option!");
     };
 
+    //handles play again, resets the game to initial state to start over
     const playAgain = () => {
         setGameStatus("initial");
     };
 
+    //grays out the image is the game hasn't started, else deblurs it as the timer passes
     const processImage = () => {
         if(gameStatus === "initial") return {filter: `contrast(0)`};
         else if(gameStatus === "active") return {filter: `blur(${(20 * timeLeft)/timeToGuess}px)`};
     }
 
+    //capitalizes a word (could be done with css but whatever)
     const capitalizeWord = (str) => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
@@ -118,6 +130,7 @@ function GuessingGamePage() {
         return hearts;
     }
 
+    //returns a tailwind class to background gradient based on pokemon's type
     const returnPokemonTypesGradient = () => {
         return (correctAnswer.types.length === 1
             ? `bg-poke_${correctAnswer.types[0].type.name}`
@@ -132,16 +145,19 @@ function GuessingGamePage() {
             .join(" "));
     }
 
+    //loading screen while the pokemons are being fetched
     if(pokemonList.length === 0) return <div className="page"><h2 className="loading">Loading...</h2></div>;
 
     return (
         <div className="page">
             <div className="half_page">
                 <div className="card">
+                    {/* doesn't display name and gradient until finished */}
                     <h2 className={gameStatus === "finished" ? returnPokemonTypesGradient() : ""}>{(gameStatus === "finished" ? capitalizeWord(correctAnswer.name) : "Who's that pokemon?")}</h2>
                     <img src={correctAnswer.sprites.other['official-artwork'].front_default} style={processImage()}></img>
                 </div>
                 <div className="timer">
+                    {/* button changes based on game state */}
                     <button onClick={gameStatus === "initial" ? startGame : playAgain} disabled={gameStatus === "active"}>{gameStatus === "initial" ? "Start" : "Play Again"}</button>
                     <h2>{String(Math.floor(timeLeft / 60)).padStart(2, "0")}:{String(timeLeft % 60).padStart(2, "0")}</h2>
                 </div>
