@@ -46,9 +46,14 @@ Open your browser and navigate to:
 http://localhost:5555
 ```
 
+## Ready to Use Deployed App
+
+[Pokedex](https://pokedex-l5ee.onrender.com/)
+
+
 ## Usage Tutorial
 
-[Scribe Tutorial]()
+[Scribe Tutorial](https://scribehow.com/embed-preview/Pokedex_App_Step-by-Step_Guide__UHeRx0nwSuKZuUQ7MANLvg)
 
 ## Folder Structure
 
